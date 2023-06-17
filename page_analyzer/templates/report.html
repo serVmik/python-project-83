@@ -1,0 +1,63 @@
+{% extends 'wrapper.html' %}
+
+{% block content %}
+<!-- ======= Flach ======= -->
+<!-- End Flash -->
+
+<main class="flex-grow-1">
+  <div class="container-lg mt-3">
+
+    <!-- ======= Url ======= -->
+    <h1>Сайт: https://getbootstrap.com</h1>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover text-nowrap" data-test="url">
+        <tbody>
+          <tr>
+            <td>ID</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Имя</td>
+            <td>https://getbootstrap.com</td>
+          </tr>
+          <tr>
+            <td>Дата создания</td>
+            <td>2023-06-17</td>
+          </tr>
+        </tbody>
+      </table>
+    </div><!-- ======= End Url ======= -->
+
+    <!-- ======= Check ======= -->
+    <h2 class="mt-5 mb-3">Проверки</h2>
+    <form method="post" action="/urls/2/checks">
+      <input type="submit" class="btn btn-primary" value="Запустить проверку">
+    </form>
+    <div>
+      <table class="table table-bordered table-hover mt-2" data-test="checks">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Код ответа</th>
+            <th>h1</th>
+            <th>title</th>
+            <th>description</th>
+            <th>Дата создания</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2</td>
+            <td>200</td>
+            <td>Build fast, responsive sites with Bootstrap</td>
+            <td>Bootstrap · The most popular HTML, CSS, and JS library in the world.</td>
+            <td>Powerful, extensible, and feature-packed frontend toolkit. Build and customize with Sass, utilize prebuilt grid system and components, and bring projects to life with powerful JavaScript plugins.</td>
+            <td>2023-06-17</td>
+          </tr>
+        </tbody>
+      </table>
+    </div><!-- End Check -->
+
+  </div>
+</main>
+{% endblock content %}
