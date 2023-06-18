@@ -4,4 +4,4 @@ __pycache__/
 setting.py
 .coverage
 coverage.xml
-
+venv/

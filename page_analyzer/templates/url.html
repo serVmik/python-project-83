@@ -1,12 +1,10 @@
-{% extends 'frame.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-
-
 <main class="flex-grow-1">
   <div class="container-lg mt-3">
 
-    <!-- ======= Url For Check ======= -->
+    <!-- ======= Url Information ======= -->
     <h1>Сайт: https://getbootstrap.com</h1>
     <div class="table-responsive">
       <table class="table table-bordered table-hover text-nowrap" data-test="url">
@@ -25,9 +23,9 @@
           </tr>
         </tbody>
       </table>
-    </div><!-- End Url For Check -->
+    </div><!-- End Url Information -->
 
-    <!-- ======= Report Of Check ======= -->
+    <!-- ======= Report Of Check Url ======= -->
     <h2 class="mt-5 mb-3">Проверки</h2>
     <form method="post" action="/urls/2/checks">
       <input type="submit" class="btn btn-primary" value="Запустить проверку">
@@ -56,8 +54,8 @@
           </tr>
         </tbody>
       </table>
-    </div><!-- End Report Of Check -->
+    </div><!-- End Report Of Check Url -->
 
   </div>
 </main>
-{% endblock content %}
+{% endblock %}
