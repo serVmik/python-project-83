@@ -49,4 +49,4 @@ selfcheck:
 check: lint test test-coverage
 #<-- End Check -->
 
-.PHONY: install test lint selfcheck check build gendiff
+.PHONY: dev install test lint selfcheck check build gendiff
