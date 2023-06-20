@@ -1,16 +1,12 @@
-# standard
 from flask import (Flask, redirect, render_template, url_for,
-                   request, flash)
+                   request, flash, get_flashed_messages)
 import os
-from dotenv import load_dotenv
+import validators
 
-# local
-from page_analyzer.project_validators import validate_url
+from page_analyzer import db_tools, url_tools
 
 app = Flask(__name__)
-
-load_dotenv()
-app.secret_key = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
 @app.get('/')
@@ -25,18 +21,29 @@ def get_url():
 
 @app.post('/url')
 def post_url():
-    db = '2'
-    url = request.form.get('url', '')
-    error = validate_url(url)
-    if url in db:
-        error = True
-        flash('Страница уже существует', 'danger')
+    url = request.form.get('url')
+    normalized_url = url_tools.normalize_url(url)
+    error_url = None
 
-    if error:
-        return redirect(url_for('index'))
-    else:
-        flash('Страница успешно добавлена', 'success')
-        return render_template('url.html')
+    if len(url) > 255:
+        flash('URL превышает 255 символов', 'danger')
+        error_url = True
+    if url == '':
+        flash('URL обязателен', 'danger')
+        error_url = True
+    if not validators.url(normalized_url):
+        flash('Некорректный URL', 'danger')
+        error_url = True
+    if db_tools.is_exists(normalized_url):
+        flash('Страница уже существует', 'danger')
+        error_url = True
+
+    if error_url:
+        return render_template('index.html')
+
+    db_tools.add_url(normalized_url)
+    flash('Страница успешно добавлена', 'success')
+    return render_template('url.html')
 
 
 @app.get('/urls')

@@ -30,11 +30,11 @@
   </header><!-- End Navigation -->
 
   <!-- ======== Flash Messages ======= -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
+<!--  {% with messages = get_flashed_messages(with_categories=true) %}-->
     {% for category, message in messages %}
       <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
     {% endfor %}
-  {% endwith %}<!-- End Flash Messages -->
+<!--  {% endwith %}&lt;!&ndash; End Flash Messages &ndash;&gt;-->
 
   <!-- ======= Content Insertion ======= -->
   {% block content %}{% endblock %}<!-- End Content Insertion -->

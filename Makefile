@@ -1,10 +1,25 @@
+#<-- ======= Developed Variables ======= -->
+PORT ?= 8000
+DB_NAME = page-analyzer
+#<-- End Developed Variables -->
+
+#<-- ======= Start Project ======= -->
 dev:
 	poetry run flask --app page_analyzer:app --debug run
 
-PORT ?= 8000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
+#<-- End Start Project -->
 
+#<-- ======= Database ======= -->
+schema-db-load:
+	psql $(DB_NAME) < database.sql
+
+show-db-urls:
+	psql -d urls
+#<-- End Database -->
+
+#<-- ======= Poetry Project ======= -->
 build:
 	poetry build
 
@@ -16,7 +31,9 @@ publish:
 
 package-install:
 	python3 -m pip install dist/*.whl
+#<-- End Poetry Project -->
 
+#<-- ======= Check ======= -->
 lint:
 	poetry run flake8 page_analyzer
 
@@ -30,5 +47,6 @@ selfcheck:
 	poetry check
 
 check: lint test test-coverage
+#<-- End Check -->
 
 .PHONY: install test lint selfcheck check build gendiff

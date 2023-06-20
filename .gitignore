@@ -5,3 +5,4 @@ setting.py
 .coverage
 coverage.xml
 venv/
+dev/
