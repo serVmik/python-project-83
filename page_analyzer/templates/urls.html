@@ -7,31 +7,29 @@
     <div class="table-responsive">
 
       <table class="table table-bordered table-hover text-nowrap" data-test="urls">
+
         <thead>
           <tr>
             <th>ID</th>
             <th>Имя</th>
             <th>Последняя проверка</th>
             <th>Код ответа</th>
-            </tr>
+          </tr>
         </thead>
 
         <tbody>
+        {% for url in urls_output %}
           <tr>
-            <td>2</td>
-            <td><a href="/urls/2">https://getbootstrap.com</a></td>
-            <td>2023-06-17</td>
-            <td>200</td>
+            <td>{{ url.id }}</td>
+            <td><a href="{{ url_for('get_url', id_=url.id) }}">{{ url.name }}</a></td>
+            <td></td>
+            <td></td>
           </tr>
-          <tr>
-            <td>1</td>
-            <td><a href="/urls/1">https://codeclimate.com</a></td>
-            <td>2023-06-17</td>
-            <td>200</td>
-          </tr>
+        {% endfor %}
         </tbody>
 
       </table>
+
     </div>
   </div>
 </main>

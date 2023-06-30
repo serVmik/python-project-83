@@ -12,7 +12,7 @@ start:
 #<-- End Start Project -->
 
 #<-- ======= Database ======= -->
-schema-db-load:
+schema-db:
 	psql $(DB_NAME) < database.sql
 
 show-db-urls:

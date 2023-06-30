@@ -1,9 +1,9 @@
-from flask import (Flask, redirect, render_template, url_for,
-                   request, flash, get_flashed_messages)
 import os
-import validators
-
-from page_analyzer import db_tools, url_tools
+from flask import (Flask, redirect, render_template, url_for,
+                   request, flash)
+from page_analyzer.db_tools import (add_url_information, show_added_urls,
+                                    get_url_information, get_id, is_url_exists)
+from page_analyzer.url_tools import check_url_for_errors, normalize_url
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -14,38 +14,30 @@ def index():
     return render_template('index.html')
 
 
-@app.get('/url')
-def get_url():
-    return render_template('url.html')
-
-
 @app.post('/url')
 def post_url():
     url = request.form.get('url')
-    normalized_url = url_tools.normalize_url(url)
-    error_url = None
+    normalized_url = normalize_url(url)
 
-    if len(url) > 255:
-        flash('URL превышает 255 символов', 'danger')
-        error_url = True
-    if url == '':
-        flash('URL обязателен', 'danger')
-        error_url = True
-    if not validators.url(normalized_url):
-        flash('Некорректный URL', 'danger')
-        error_url = True
-    if db_tools.is_exists(normalized_url):
-        flash('Страница уже существует', 'danger')
-        error_url = True
-
-    if error_url:
+    messages = check_url_for_errors(url, normalized_url)
+    if messages:
+        [flash(*message) for message in messages]
         return render_template('index.html')
 
-    db_tools.add_url(normalized_url)
-    flash('Страница успешно добавлена', 'success')
-    return render_template('url.html')
+    if is_url_exists(normalized_url):
+        id_ = get_id(normalized_url)
+        flash('Страница уже существует', 'info')
+    else:
+        id_ = add_url_information(normalized_url)
+        flash('Страница успешно добавлена', 'success')
+    return redirect(url_for('get_url', id_=id_))
+
+
+@app.get('/urls/<id_>')
+def get_url(id_):
+    return render_template('url.html', url_information=get_url_information(id_))
 
 
 @app.get('/urls')
 def get_urls():
-    return render_template('urls.html')
+    return render_template('urls.html', urls_output=show_added_urls())
