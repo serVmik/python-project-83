@@ -42,21 +42,15 @@ def get_url_info(id_):
         return curs.fetchone()
 
 
-# def get_urls_info():
-#     conn = connect()
-#     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
-#         curs.execute('SELECT id, name FROM urls ORDER BY created_at DESC')
-#         return curs.fetchall()
-
-
 def get_urls_info():
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
-        curs.execute('SELECT urls.id AS id, '
+        curs.execute('SELECT DISTINCT ON (id) '
+                     'urls.id AS id, '
                      'urls.name AS name, '
                      'url_checks.created_at AS created_at '
                      'FROM urls JOIN url_checks '
-                     'ON urls.id = url_checks.url_id')
+                     'ON urls.id = url_checks.url_id ')
         return curs.fetchall()
 
 
