@@ -1,8 +1,11 @@
 import os
-from flask import (Flask, redirect, render_template, url_for,
-                   request, flash)
-from page_analyzer.db_tools import (add_url_information, show_added_urls,
-                                    get_url_information, get_id, is_url_exists)
+from flask import (
+        Flask, redirect, render_template, url_for, request, flash
+        )
+from page_analyzer.db_tools import (
+        add_url_info, show_added_urls, get_url_info, get_id,
+        is_url_exists, add_check_to_url_checks, get_check_info
+        )
 from page_analyzer.url_tools import check_url_for_errors, normalize_url
 
 app = Flask(__name__)
@@ -28,16 +31,24 @@ def post_url():
         id_ = get_id(normalized_url)
         flash('Страница уже существует', 'info')
     else:
-        id_ = add_url_information(normalized_url)
+        id_ = add_url_info(normalized_url)
         flash('Страница успешно добавлена', 'success')
     return redirect(url_for('get_url', id_=id_))
 
 
 @app.get('/urls/<id_>')
 def get_url(id_):
-    return render_template('url.html', url_information=get_url_information(id_))
+    return render_template('url.html', url_info=get_url_info(id_))
 
 
 @app.get('/urls')
 def get_urls():
     return render_template('urls.html', urls_output=show_added_urls())
+
+
+@app.post('/urls/<id_>/checks')
+def check_url(id_):
+    add_check_to_url_checks(id_)
+    # get_check_from_url_checks()
+    return render_template('url.html', url_info=get_url_info(id_),
+                           check_info=get_check_info(id_))

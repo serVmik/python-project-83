@@ -18,7 +18,7 @@ def is_url_exists(url):
         return True if db_answer else False
 
 
-def add_url_information(url):
+def add_url_info(url):
     conn = connect()
     with conn.cursor() as curs:
         curs.execute('INSERT INTO urls (name) VALUES (%s) RETURNING id', (url,))
@@ -35,7 +35,7 @@ def get_id(url):
         return id_
 
 
-def get_url_information(id_):
+def get_url_info(id_):
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute('SELECT * FROM urls WHERE id = %s', (id_,))
@@ -47,3 +47,23 @@ def show_added_urls():
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute('SELECT id, name FROM urls ORDER BY created_at DESC')
         return curs.fetchall()
+
+
+def add_check_to_url_checks(id_):
+    conn = connect()
+    with conn.cursor() as curs:
+        curs.execute('INSERT INTO url_checks (url_id)'
+                     'VALUES (%s) RETURNING id', (id_,))
+        id_ = curs.fetchone
+        conn.commit()
+        return id_
+
+
+def get_check_info(id_):
+    # conn = connect()
+    # with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
+    #     curs.execute('SELECT id, name FROM urls, LATERAL'
+    #                  '(SELECT created_at FROM url_checks'
+    #                  'WHERE %s = url_id', (id_,))
+    #     return curs.fetchall
+    pass

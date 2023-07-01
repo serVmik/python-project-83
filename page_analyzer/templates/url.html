@@ -11,25 +11,27 @@
         <tbody>
           <tr>
             <td>ID</td>
-            <td>{{ url_information.id }}</td>
+            <td>{{ url_info.id }}</td>
           </tr>
           <tr>
             <td>Имя</td>
-            <td>{{ url_information.name }}</td>
+            <td>{{ url_info.name }}</td>
           </tr>
           <tr>
             <td>Дата создания</td>
-            <td>{{ url_information.created_at }}</td>
+            <td>{{ url_info.created_at }}</td>
           </tr>
         </tbody>
       </table>
     </div><!-- End Url Information -->
 
-    <!-- ======= Report Of Check Url ======= -->
+    <!-- ======= Reports Of Check Url ======= -->
     <h2 class="mt-5 mb-3">Проверки</h2>
-    <form method="post" action="/urls/2/checks">
+
+    <!-- ======= Validation "Start" Form ====== -->
+    <form method="post" action="{{ url_for('check_url', id_=url_info.id) }}">
       <input type="submit" class="btn btn-primary" value="Запустить проверку">
-    </form>
+    </form><!-- End Validation "Start" Form -->
 
     <div>
       <table class="table table-bordered table-hover mt-2" data-test="checks">
@@ -45,16 +47,16 @@
         </thead>
         <tbody>
           <tr>
-            <td>2</td>
-            <td>200</td>
-            <td>Build fast, responsive sites with Bootstrap</td>
-            <td>Bootstrap · The most popular HTML, CSS, and JS library in the world.</td>
-            <td>Powerful, extensible, and feature-packed frontend toolkit. Build and customize with Sass, utilize prebuilt grid system and components, and bring projects to life with powerful JavaScript plugins.</td>
-            <td>2023-06-17</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
-    </div><!-- End Report Of Check Url -->
+    </div><!-- End Reports Of Check Url -->
 
   </div>
 </main>
