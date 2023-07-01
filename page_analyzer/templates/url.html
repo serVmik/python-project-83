@@ -46,14 +46,16 @@
           </tr>
         </thead>
         <tbody>
+        {% for info in check_info %}
           <tr>
+            <td>{{ info.id }}</td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ info.created_at }}</td>
           </tr>
+        {% endfor %}
         </tbody>
       </table>
     </div><!-- End Reports Of Check Url -->

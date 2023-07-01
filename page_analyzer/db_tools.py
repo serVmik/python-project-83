@@ -60,10 +60,15 @@ def add_check_to_url_checks(id_):
 
 
 def get_check_info(id_):
+    conn = connect()
+    with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
+        curs.execute('SELECT id, created_at FROM url_checks '
+                     'WHERE %s = url_id', (id_,))
+        return curs.fetchall()
+
     # conn = connect()
     # with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
     #     curs.execute('SELECT id, name FROM urls, LATERAL'
     #                  '(SELECT created_at FROM url_checks'
     #                  'WHERE %s = url_id', (id_,))
     #     return curs.fetchall
-    pass
