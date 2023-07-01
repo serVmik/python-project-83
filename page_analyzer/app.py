@@ -14,19 +14,19 @@ def index():
 
 @app.post('/url')
 def post_url():
-    entered_url = request.form.get('url')
-    url = url_t.normalize_url(entered_url)
+    url = request.form.get('url')
+    norm_url = url_t.normalize_url(url)
 
-    messages = url_t.check_url_for_errors(entered_url, url)
+    messages = url_t.check_url_for_errors(url, norm_url)
     if messages:
         [flash(*message) for message in messages]
         return render_template('index.html')
 
-    if db.is_url_exists(url):
-        id_ = db.get_id(url)
+    if db.is_url_exists(norm_url):
+        id_ = db.get_id(norm_url)
         flash('Страница уже существует', 'info')
     else:
-        id_ = db.add_url_info(url)
+        id_ = db.add_url_info(norm_url)
         flash('Страница успешно добавлена', 'success')
     return redirect(url_for('show_url', id_=id_))
 

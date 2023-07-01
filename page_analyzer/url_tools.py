@@ -9,21 +9,21 @@ def normalize_url(url):
     return f'{parsed_url.scheme}://{parsed_url.netloc}'
 
 
-def check_url_for_errors(entered_url, url):
+def check_url_for_errors(url, norm_url):
     url_error = []
 
-    if len(entered_url) > 255:
+    if len(url) > 255:
         url_error.append(('URL превышает 255 символов', 'danger'))
-    if entered_url == '':
+    if url == '':
         url_error.append(('URL обязателен', 'danger'))
-    if not validators.url(url):
+    if not validators.url(norm_url):
         url_error.append(('Некорректный URL', 'danger'))
 
     return url_error
 
 
-def get_requests_info(url):
-    r = requests.get(url)
+def get_requests_info(norm_url):
+    r = requests.get(norm_url)
     requests_info = {'status_code': r.status_code}
 
     soup = BeautifulSoup(r.text, 'html.parser')

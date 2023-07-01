@@ -4,10 +4,14 @@ from psycopg2.extras import NamedTupleCursor
 from dotenv import load_dotenv
 
 load_dotenv()
-conn = psycopg2.connect(os.getenv('DATABASE_URL'))
+
+
+def connect():
+    return psycopg2.connect(os.getenv('DATABASE_URL'))
 
 
 def is_url_exists(url):
+    conn = connect()
     with conn.cursor() as curs:
         curs.execute('SELECT * FROM urls WHERE name = %s', (url,))
         db_answer = curs.fetchone()
@@ -15,6 +19,7 @@ def is_url_exists(url):
 
 
 def add_url_info(url):
+    conn = connect()
     with conn.cursor() as curs:
         curs.execute('INSERT INTO urls (name) VALUES (%s) RETURNING id', (url,))
         id_, = curs.fetchone()
@@ -23,6 +28,7 @@ def add_url_info(url):
 
 
 def get_id(url):
+    conn = connect()
     with conn.cursor() as curs:
         curs.execute('SELECT id FROM urls WHERE name = %s', (url,))
         id_, = curs.fetchone()
@@ -30,6 +36,7 @@ def get_id(url):
 
 
 def get_norm_url(id_):
+    conn = connect()
     with conn.cursor() as curs:
         curs.execute('SELECT name FROM urls WHERE id = %s', (id_,))
         norm_url, = curs.fetchone()
@@ -37,12 +44,14 @@ def get_norm_url(id_):
 
 
 def get_url_info(id_):
+    conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute('SELECT * FROM urls WHERE id = %s', (id_,))
         return curs.fetchone()
 
 
 def get_urls_info():
+    conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute(
             'SELECT DISTINCT ON (id) '
@@ -56,6 +65,7 @@ def get_urls_info():
 
 
 def add_check_to_url_checks(url_id, requests_info):
+    conn = connect()
     with conn.cursor() as curs:
         curs.execute(
             'INSERT INTO url_checks '
@@ -71,6 +81,7 @@ def add_check_to_url_checks(url_id, requests_info):
 
 
 def get_check_info(id_):
+    conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute(
             'SELECT id, status_code, h1, title, description, created_at '
