@@ -53,28 +53,38 @@ def get_url_info(id_):
 def get_urls_info():
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
-        curs.execute('SELECT DISTINCT ON (id) '
-                     'urls.id AS id, '
-                     'urls.name AS name, '
-                     'url_checks.created_at AS created_at '
-                     'FROM urls JOIN url_checks '
-                     'ON urls.id = url_checks.url_id ')
+        curs.execute(
+            'SELECT DISTINCT ON (id) '
+            'urls.id AS id, '
+            'urls.name AS name, '
+            'url_checks.created_at AS created_at '
+            'FROM urls JOIN url_checks '
+            'ON urls.id = url_checks.url_id '
+        )
         return curs.fetchall()
 
 
-def add_check_to_url_checks(id_, requests_info):
+def add_check_to_url_checks(url_id, requests_info):
     conn = connect()
     with conn.cursor() as curs:
-        curs.execute('INSERT INTO url_checks '
-                     '(url_id, status_code) '
-                     'VALUES (%s, %s)',
-                     (id_, requests_info['status_code'],))
+        curs.execute(
+            'INSERT INTO url_checks '
+            '(url_id, status_code, h1, title, description) '
+            'VALUES (%s, %s, %s, %s, %s)',
+            (url_id,
+             requests_info['status_code'],
+             requests_info['h1'],
+             requests_info['title'],
+             requests_info['description'])
+        )
         conn.commit()
 
 
 def get_check_info(id_):
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
-        curs.execute('SELECT id, status_code, created_at FROM url_checks '
-                     'WHERE %s = url_id', (id_,))
+        curs.execute(
+            'SELECT id, status_code, h1, title, description, created_at '
+            'FROM url_checks WHERE %s = url_id', (id_,)
+        )
         return curs.fetchall()
