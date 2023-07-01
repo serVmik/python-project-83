@@ -1,9 +1,11 @@
 import os
-from flask import (Flask, redirect, render_template, url_for, request, flash)
+from flask import Flask, redirect, render_template, url_for, request, flash
 from page_analyzer.db_tools import (add_url_info, get_urls_info, get_id,
                                     get_url_info, is_url_exists,
-                                    add_check_to_url_checks, get_check_info)
-from page_analyzer.url_tools import check_url_for_errors, normalize_url
+                                    add_check_to_url_checks, get_check_info,
+                                    get_norm_url)
+from page_analyzer.url_tools import (check_url_for_errors, normalize_url,
+                                     get_req_info)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -30,21 +32,22 @@ def post_url():
     else:
         id_ = add_url_info(norm_url)
         flash('Страница успешно добавлена', 'success')
-    return redirect(url_for('get_url', id_=id_))
+    return redirect(url_for('show_url', id_=id_))
 
 
 @app.get('/urls/<id_>')
-def get_url(id_):
+def show_url(id_):
     return render_template('url.html', url_info=get_url_info(id_))
 
 
 @app.get('/urls')
-def get_urls():
+def show_urls():
     return render_template('urls.html', urls_info=get_urls_info())
 
 
 @app.post('/urls/<id_>/checks')
 def check_url(id_):
-    add_check_to_url_checks(id_)
+    requests_info = get_req_info(get_norm_url(id_))
+    add_check_to_url_checks(id_, requests_info)
     return render_template('url.html', url_info=get_url_info(id_),
                            check_info=get_check_info(id_))

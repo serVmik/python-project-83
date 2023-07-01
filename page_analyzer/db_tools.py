@@ -35,6 +35,14 @@ def get_id(url):
         return id_
 
 
+def get_norm_url(id_):
+    conn = connect()
+    with conn.cursor() as curs:
+        curs.execute('SELECT name FROM urls WHERE id = %s', (id_,))
+        norm_url, = curs.fetchone()
+        return norm_url
+
+
 def get_url_info(id_):
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
@@ -54,19 +62,19 @@ def get_urls_info():
         return curs.fetchall()
 
 
-def add_check_to_url_checks(id_):
+def add_check_to_url_checks(id_, requests_info):
     conn = connect()
     with conn.cursor() as curs:
-        curs.execute('INSERT INTO url_checks (url_id)'
-                     'VALUES (%s) RETURNING id', (id_,))
-        id_ = curs.fetchone
+        curs.execute('INSERT INTO url_checks '
+                     '(url_id, status_code) '
+                     'VALUES (%s, %s)',
+                     (id_, requests_info['status_code'],))
         conn.commit()
-        return id_
 
 
 def get_check_info(id_):
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
-        curs.execute('SELECT id, created_at FROM url_checks '
+        curs.execute('SELECT id, status_code, created_at FROM url_checks '
                      'WHERE %s = url_id', (id_,))
         return curs.fetchall()

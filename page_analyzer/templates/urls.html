@@ -21,7 +21,7 @@
         {% for url in urls_info %}
           <tr>
             <td>{{ url.id }}</td>
-            <td><a href="{{ url_for('get_url', id_=url.id) }}">{{ url.name }}</a></td>
+            <td><a href="{{ url_for('show_url', id_=url.id) }}">{{ url.name }}</a></td>
             <td>{{ url.created_at }}</td>
             <td></td>
           </tr>
