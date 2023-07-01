@@ -1,6 +1,6 @@
 import os
 from flask import (Flask, redirect, render_template, url_for, request, flash)
-from page_analyzer.db_tools import (add_url_info, show_added_urls, get_id,
+from page_analyzer.db_tools import (add_url_info, get_urls_info, get_id,
                                     get_url_info, is_url_exists,
                                     add_check_to_url_checks, get_check_info)
 from page_analyzer.url_tools import check_url_for_errors, normalize_url
@@ -40,7 +40,7 @@ def get_url(id_):
 
 @app.get('/urls')
 def get_urls():
-    return render_template('urls.html', urls_output=show_added_urls())
+    return render_template('urls.html', urls_info=get_urls_info())
 
 
 @app.post('/urls/<id_>/checks')
