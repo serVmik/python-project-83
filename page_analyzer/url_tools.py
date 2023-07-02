@@ -22,8 +22,8 @@ def check_url_for_errors(entered_url, url):
     return url_error
 
 
-def get_requests_info(norm_url):
-    r = requests.get(norm_url)
+def get_requests_info(url):
+    r = requests.get(url)
     requests_info = {'status_code': r.status_code}
 
     soup = BeautifulSoup(r.text, 'html.parser')
