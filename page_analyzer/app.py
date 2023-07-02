@@ -37,14 +37,14 @@ def show_urls():
                            urls_info=db.get_urls_info())
 
 
-@app.get('/urls/<id_>')
+@app.get('/urls/<int:id_>')
 def show_url(id_):
     return render_template('url.html',
                            url_info=db.get_url_info(id_),
                            check_info=db.get_check_info(id_))
 
 
-@app.post('/urls/<id_>/checks')
+@app.post('/urls/<int:id_>/checks')
 def check_url(id_):
     requests_info = url_t.get_requests_info(db.get_norm_url(id_))
     db.add_check_to_url_checks(id_, requests_info)
