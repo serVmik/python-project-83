@@ -57,7 +57,8 @@ def get_urls_info():
             'SELECT DISTINCT ON (id) '
             'urls.id AS id, '
             'urls.name AS name, '
-            'url_checks.created_at AS created_at '
+            'url_checks.created_at AS created_at, '
+            'url_checks.status_code AS status_code '
             'FROM urls JOIN url_checks '
             'ON urls.id = url_checks.url_id '
         )
