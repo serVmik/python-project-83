@@ -9,14 +9,14 @@ def normalize_url(url):
     return f'{parsed_url.scheme}://{parsed_url.netloc}'
 
 
-def check_url_for_errors(url, norm_url):
+def check_url_for_errors(entered_url, url):
     url_error = []
 
-    if len(url) > 255:
+    if len(entered_url) > 255:
         url_error.append(('URL превышает 255 символов', 'danger'))
-    if url == '':
+    if entered_url == '':
         url_error.append(('URL обязателен', 'danger'))
-    if not validators.url(norm_url):
+    if not validators.url(url):
         url_error.append(('Некорректный URL', 'danger'))
 
     return url_error
