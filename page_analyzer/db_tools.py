@@ -43,8 +43,7 @@ def get_id(url):
         curs.execute(
             'SELECT id FROM urls WHERE name = %s', (url,)
         )
-        id_, = curs.fetchone()
-        return id_
+        return curs.fetchone()
 
 
 def get_url_info(id_):
