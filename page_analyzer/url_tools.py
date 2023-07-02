@@ -4,30 +4,26 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def normalize_url(entered_url):
-    parsed_url = urlparse(entered_url)
+def normalize_url(url):
+    parsed_url = urlparse(url)
     return f'{parsed_url.scheme}://{parsed_url.netloc}'
 
 
-def check_url_for_errors(entered_url, url):
+def check_url_for_errors(url, norm_url):
     url_error = []
-    if len(entered_url) > 255:
+
+    if len(url) > 255:
         url_error.append(('URL превышает 255 символов', 'danger'))
-    if entered_url == '':
+    if url == '':
         url_error.append(('URL обязателен', 'danger'))
-    if not validators.url(url):
+    if not validators.url(norm_url):
         url_error.append(('Некорректный URL', 'danger'))
+
     return url_error
 
 
-def get_requests_info(url):
-    try:
-        r = requests.get(url)
-    except requests.ConnectionError:
-        return None
-    if r.status_code != 200:
-        return None
-
+def get_requests_info(norm_url):
+    r = requests.get(norm_url)
     requests_info = {'status_code': r.status_code}
 
     soup = BeautifulSoup(r.text, 'html.parser')
