@@ -40,8 +40,8 @@ def get_norm_url(id_):
     conn = connect()
     with conn.cursor() as curs:
         curs.execute('SELECT name FROM urls WHERE id = %s', (id_,))
-        norm_url, = curs.fetchone()
-        return norm_url
+        url, = curs.fetchone()
+        return url
 
 
 def get_url_info(id_):
