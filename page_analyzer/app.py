@@ -46,8 +46,14 @@ def show_url(id_):
 
 @app.post('/urls/<int:id_>/checks')
 def check_url(id_):
-    requests_info = url_t.get_requests_info(db.get_norm_url(id_))
-    db.add_check_to_url_checks(id_, requests_info)
+    url = db.get_url_info(id_).name
+    requests_info = url_t.get_requests_info(url)
+
+    if not requests_info:
+        flash('Произошла ошибка при проверке', 'danger')
+    else:
+        db.add_check_to_url_checks(id_, requests_info)
+        flash('Страница успешно проверена', 'success')
     return render_template('url.html',
                            url_info=db.get_url_info(id_),
                            check_info=db.get_check_info(id_))

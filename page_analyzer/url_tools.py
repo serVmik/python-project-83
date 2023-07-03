@@ -23,7 +23,13 @@ def check_url_for_errors(entered_url, url):
 
 
 def get_requests_info(url):
-    r = requests.get(url)
+    try:
+        r = requests.get(url)
+    except requests.ConnectionError:
+        return None
+    if r.status_code != 200:
+        return None
+
     requests_info = {'status_code': r.status_code}
 
     soup = BeautifulSoup(r.text, 'html.parser')
