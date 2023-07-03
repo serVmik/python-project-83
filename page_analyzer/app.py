@@ -49,7 +49,7 @@ def check_url(id_):
     url = db.get_url_info(id_).name
     requests_info = url_t.get_requests_info(url)
 
-    if not requests_info:
+    if not requests_info or requests_info.get('status_code') != 200:
         flash('Произошла ошибка при проверке', 'danger')
     else:
         db.add_check_to_url_checks(id_, requests_info)

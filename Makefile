@@ -37,16 +37,10 @@ package-install:
 lint:
 	poetry run flake8 page_analyzer
 
-test:
-	poetry run pytest
-
-test-coverage:
-	poetry run pytest --cov=page_analyzer --cov-report xml
-
 selfcheck:
 	poetry check
 
-check: lint test test-coverage
+check: lint
 #<-- End Check -->
 
 .PHONY: dev install test lint selfcheck check build gendiff

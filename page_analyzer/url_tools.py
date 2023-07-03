@@ -25,27 +25,15 @@ def check_url_for_errors(entered_url, url):
 def get_requests_info(url):
     try:
         r = requests.get(url)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        desc = soup.find('meta', attrs={'name': 'description'})
+        requests_info = {
+            'status_code': r.status_code,
+            'h1': soup.h1.get_text().strip() if soup.h1 else '',
+            'title': soup.title.string if soup.title else '',
+            'description': desc['content'].strip() if desc else ''
+        }
+        return requests_info
+
     except requests.ConnectionError:
         return None
-    if r.status_code != 200:
-        return None
-
-    requests_info = {'status_code': r.status_code}
-
-    soup = BeautifulSoup(r.text, 'html.parser')
-    if soup.find('title'):
-        requests_info['title'] = str(soup.find('title').text)
-    else:
-        requests_info['title'] = ''
-    if soup.find('h1'):
-        requests_info['h1'] = str(soup.find('h1').text)
-    else:
-        requests_info['h1'] = ''
-
-    description = soup.find('meta', attrs={'name': 'description'})
-    if description:
-        requests_info['description'] = description['content'].strip()
-    else:
-        requests_info['description'] = ''
-
-    return requests_info
