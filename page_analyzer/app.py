@@ -20,13 +20,13 @@ def post_url():
     messages = url_t.check_url_for_errors(entered_url, url)
     if messages:
         [flash(*message) for message in messages]
-        return render_template('index.html')
+        return redirect(url_for('index'))
 
-    id_ = db.get_id(url)
-    if id_:
+    if db.is_url_exists(url):
+        id_ = db.get_id(url)
         flash('Страница уже существует', 'info')
     else:
-        id_ = db.add_url_info(url)
+        id_ = db.add_url(url)
         flash('Страница успешно добавлена', 'success')
     return redirect(url_for('show_url', id_=id_))
 
