@@ -2,6 +2,7 @@ import os
 import psycopg2
 from psycopg2.extras import NamedTupleCursor
 from dotenv import load_dotenv
+from werkzeug.routing import BuildError
 
 load_dotenv()
 
@@ -18,7 +19,7 @@ def is_url_exists(url):
         return True if db_answer else False
 
 
-def add_url_info(url):
+def add_url(url):
     conn = connect()
     with conn.cursor() as curs:
         curs.execute('INSERT INTO urls (name) VALUES (%s) RETURNING id', (url,))
