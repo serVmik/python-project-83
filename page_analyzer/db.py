@@ -30,19 +30,9 @@ def add_url(url):
 def get_id(url):
     conn = connect()
     with conn.cursor() as curs:
-        curs.execute(
-            'SELECT id FROM urls WHERE name = %s', (url,)
-        )
+        curs.execute('SELECT id FROM urls WHERE name = %s', (url,))
         id_, = curs.fetchone()
         return id_
-
-
-def get_norm_url(id_):
-    conn = connect()
-    with conn.cursor() as curs:
-        curs.execute('SELECT name FROM urls WHERE id = %s', (id_,))
-        url, = curs.fetchone()
-        return url
 
 
 def get_url_info(id_):

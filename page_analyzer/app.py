@@ -1,7 +1,6 @@
 import os
 from flask import Flask, redirect, render_template, url_for, request, flash
-import page_analyzer.db_tools as db
-import page_analyzer.url_tools as url_t
+from page_analyzer import db, urls
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -15,9 +14,9 @@ def index():
 @app.post('/url')
 def post_url():
     entered_url = request.form.get('url')
-    url = url_t.normalize_url(entered_url)
+    url = urls.normalize_url(entered_url)
 
-    messages = url_t.check_url_for_errors(entered_url, url)
+    messages = urls.check_url_for_errors(entered_url, url)
     if messages:
         [flash(*message) for message in messages]
         return redirect(url_for('index'))
@@ -47,7 +46,7 @@ def show_url(id_):
 @app.post('/urls/<int:id_>/checks')
 def check_url(id_):
     url = db.get_url_info(id_).name
-    requests_info = url_t.get_requests_info(url)
+    requests_info = urls.get_requests_info(url)
 
     if not requests_info or requests_info.get('status_code') != 200:
         flash('Произошла ошибка при проверке', 'danger')
