@@ -1,7 +1,7 @@
 import os
 from flask import Flask, redirect, render_template, url_for, request, flash
-from page_analyzer import db, urls
 from dotenv import load_dotenv
+from page_analyzer import db, urls
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')

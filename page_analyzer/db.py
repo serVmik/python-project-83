@@ -69,7 +69,8 @@ def add_check(connection, url_id, requests_info):
 def get_check(connection, url_id):
     with connection.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute(
-            'SELECT id AS check_id, status_code, h1, title, description, created_at '
+            'SELECT '
+            'id AS check_id, status_code, h1, title, description, created_at '
             'FROM url_checks WHERE %s = url_id', (url_id,)
         )
         return curs.fetchall()
