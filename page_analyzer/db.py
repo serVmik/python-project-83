@@ -1,50 +1,41 @@
-import os
 import psycopg2
 from psycopg2.extras import NamedTupleCursor
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
-def connect():
-    return psycopg2.connect(os.getenv('DATABASE_URL'))
+def connect(conn_string):
+    return psycopg2.connect(conn_string)
 
 
-def is_url_exists(url):
-    conn = connect()
-    with conn.cursor() as curs:
+def is_url_exists(connection, url):
+    with connection.cursor() as curs:
         curs.execute('SELECT * FROM urls WHERE name = %s', (url,))
         db_answer = curs.fetchone()
         return True if db_answer else False
 
 
-def add_url(url):
-    conn = connect()
-    with conn.cursor() as curs:
+def add_url(connection, url):
+    with connection.cursor() as curs:
         curs.execute('INSERT INTO urls (name) VALUES (%s) RETURNING id', (url,))
         url_id, = curs.fetchone()
-        conn.commit()
+        connection.commit()
         return url_id
 
 
-def get_url_id(url):
-    conn = connect()
-    with conn.cursor() as curs:
+def get_url_id(connection, url):
+    with connection.cursor() as curs:
         curs.execute('SELECT id FROM urls WHERE name = %s', (url,))
         url_id, = curs.fetchone()
         return url_id
 
 
-def get_url(url_id):
-    conn = connect()
-    with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
+def get_url(connection, url_id):
+    with connection.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute('SELECT * FROM urls WHERE id = %s', (url_id,))
         return curs.fetchone()
 
 
-def get_urls():
-    conn = connect()
-    with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
+def get_urls(connection):
+    with connection.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute(
             'SELECT urls.id AS id, '
             'urls.name AS name, '
@@ -60,9 +51,8 @@ def get_urls():
         return curs.fetchall()
 
 
-def add_check(url_id, requests_info):
-    conn = connect()
-    with conn.cursor() as curs:
+def add_check(connection, url_id, requests_info):
+    with connection.cursor() as curs:
         curs.execute(
             'INSERT INTO url_checks '
             '(url_id, status_code, h1, title, description) '
@@ -73,12 +63,11 @@ def add_check(url_id, requests_info):
              requests_info['title'],
              requests_info['description'])
         )
-        conn.commit()
+        connection.commit()
 
 
-def get_check(url_id):
-    conn = connect()
-    with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
+def get_check(connection, url_id):
+    with connection.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute(
             'SELECT id AS check_id, status_code, h1, title, description, created_at '
             'FROM url_checks WHERE %s = url_id', (url_id,)
