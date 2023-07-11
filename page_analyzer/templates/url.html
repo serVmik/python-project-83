@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- ======= Reports Of Check Url ======= -->
 <main class="flex-grow-1">
   <div class="container-lg mt-3">
 
@@ -25,14 +26,14 @@
       </table>
     </div><!-- End Url Information -->
 
-    <!-- ======= Reports Of Check Url ======= -->
     <h2 class="mt-5 mb-3">Проверки</h2>
 
-    <!-- ======= Validation "Start" Form ====== -->
+    <!-- ======= Start Checking Form ====== -->
     <form method="post" action="{{ url_for('check_url', url_id=url_info.id) }}">
       <input type="submit" class="btn btn-primary" value="Запустить проверку">
-    </form><!-- End Validation "Start" Form -->
+    </form><!-- End Start Checking Form -->
 
+    <!-- ======= Table Of Checks ======= -->
     <div>
       <table class="table table-bordered table-hover mt-2" data-test="checks">
         <thead>
@@ -58,8 +59,8 @@
         {% endfor %}
         </tbody>
       </table>
-    </div><!-- End Reports Of Check Url -->
+    </div><!-- End Table Of Checks -->
 
   </div>
-</main>
+</main><!-- End Reports Of Check Url -->
 {% endblock %}

@@ -65,6 +65,7 @@ def check_url(url_id):
     else:
         db.add_check(connection, url_id, requests_info)
         flash('Страница успешно проверена', 'success')
+
     url_info = db.get_url(connection, url_id)
     check_info = db.get_check(connection, url_id)
     return render_template('url.html',
