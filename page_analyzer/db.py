@@ -22,23 +22,23 @@ def add_url(url):
     conn = connect()
     with conn.cursor() as curs:
         curs.execute('INSERT INTO urls (name) VALUES (%s) RETURNING id', (url,))
-        id_, = curs.fetchone()
+        url_id, = curs.fetchone()
         conn.commit()
-        return id_
+        return url_id
 
 
 def get_url_id(url):
     conn = connect()
     with conn.cursor() as curs:
         curs.execute('SELECT id FROM urls WHERE name = %s', (url,))
-        id_, = curs.fetchone()
-        return id_
+        url_id, = curs.fetchone()
+        return url_id
 
 
-def get_url(id_):
+def get_url(url_id):
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
-        curs.execute('SELECT * FROM urls WHERE id = %s', (id_,))
+        curs.execute('SELECT * FROM urls WHERE id = %s', (url_id,))
         return curs.fetchone()
 
 
@@ -76,11 +76,11 @@ def add_check(url_id, requests_info):
         conn.commit()
 
 
-def get_check(id_):
+def get_check(url_id):
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute(
-            'SELECT id, status_code, h1, title, description, created_at '
-            'FROM url_checks WHERE %s = url_id', (id_,)
+            'SELECT id AS check_id, status_code, h1, title, description, created_at '
+            'FROM url_checks WHERE %s = url_id', (url_id,)
         )
         return curs.fetchall()

@@ -22,12 +22,12 @@ def post_url():
         return redirect(url_for('index'))
 
     if db.is_url_exists(url):
-        id_ = db.get_url_id(url)
+        url_id = db.get_url_id(url)
         flash('Страница уже существует', 'info')
     else:
-        id_ = db.add_url(url)
+        url_id = db.add_url(url)
         flash('Страница успешно добавлена', 'success')
-    return redirect(url_for('show_url', id_=id_))
+    return redirect(url_for('show_url', url_id=url_id))
 
 
 @app.get('/urls')
@@ -36,23 +36,23 @@ def show_urls():
                            urls_info=db.get_urls())
 
 
-@app.get('/urls/<int:id_>')
-def show_url(id_):
+@app.get('/urls/<int:url_id>')
+def show_url(url_id):
     return render_template('url.html',
-                           url_info=db.get_url(id_),
-                           check_info=db.get_check(id_))
+                           url_info=db.get_url(url_id),
+                           check_info=db.get_check(url_id))
 
 
-@app.post('/urls/<int:id_>/checks')
-def check_url(id_):
-    url = db.get_url(id_).name
+@app.post('/urls/<int:url_id>/checks')
+def check_url(url_id):
+    url = db.get_url(url_id).name
     requests_info = urls.get_requests(url)
 
     if not requests_info or requests_info.get('status_code') != 200:
         flash('Произошла ошибка при проверке', 'danger')
     else:
-        db.add_check(id_, requests_info)
+        db.add_check(url_id, requests_info)
         flash('Страница успешно проверена', 'success')
     return render_template('url.html',
-                           url_info=db.get_url(id_),
-                           check_info=db.get_check(id_))
+                           url_info=db.get_url(url_id),
+                           check_info=db.get_check(url_id))

@@ -29,7 +29,7 @@
     <h2 class="mt-5 mb-3">Проверки</h2>
 
     <!-- ======= Validation "Start" Form ====== -->
-    <form method="post" action="{{ url_for('check_url', id_=url_info.id) }}">
+    <form method="post" action="{{ url_for('check_url', url_id=url_info.id) }}">
       <input type="submit" class="btn btn-primary" value="Запустить проверку">
     </form><!-- End Validation "Start" Form -->
 
@@ -48,7 +48,7 @@
         <tbody>
         {% for info in check_info %}
           <tr>
-            <td>{{ info.id }}</td>
+            <td>{{ info.check_id }}</td>
             <td>{{ info.status_code }}</td>
             <td>{{ info.h1 }}</td>
             <td>{{ info.title }}</td>
