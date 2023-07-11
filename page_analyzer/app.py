@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 from page_analyzer import db, urls
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 load_dotenv()
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CONN_STRING = os.getenv('DATABASE_URL')
 
 
@@ -15,23 +15,25 @@ def index():
     return render_template('index.html')
 
 
-@app.post('/url')
+@app.post('/urls')
 def post_url():
     entered_url = request.form.get('url')
-    url = urls.normalize_url(entered_url)
-
-    messages = urls.validate_url(entered_url, url)
+    messages = urls.validate_url(entered_url)
     if messages:
         [flash(*message) for message in messages]
-        return redirect(url_for('index'))
+        return render_template('index.html',
+                               url=entered_url), 422
 
     connection = db.connect(CONN_STRING)
+    url = urls.normalize_url(entered_url)
+
     if db.is_url_exists(connection, url):
         url_id = db.get_url_id(connection, url)
         flash('Страница уже существует', 'info')
     else:
         url_id = db.add_url(connection, url)
         flash('Страница успешно добавлена', 'success')
+
     return redirect(url_for('show_url',
                             url_id=url_id))
 

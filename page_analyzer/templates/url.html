@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- ======= Reports Of Check Url ======= -->
-<main class="flex-grow-1">
+  <!-- ======= Reports Of Check Url ======= -->
+  <main class="flex-grow-1">
   <div class="container-lg mt-3">
 
     <!-- ======= Url Information ======= -->
     <h1>Сайт: https://getbootstrap.com</h1>
     <div class="table-responsive">
       <table class="table table-bordered table-hover text-nowrap" data-test="url">
+
         <tbody>
           <tr>
             <td>ID</td>
@@ -23,6 +24,7 @@
             <td>{{ url_info.created_at }}</td>
           </tr>
         </tbody>
+
       </table>
     </div><!-- End Url Information -->
 
@@ -36,6 +38,7 @@
     <!-- ======= Table Of Checks ======= -->
     <div>
       <table class="table table-bordered table-hover mt-2" data-test="checks">
+
         <thead>
           <tr>
             <th>ID</th>
@@ -46,6 +49,7 @@
             <th>Дата создания</th>
           </tr>
         </thead>
+
         <tbody>
         {% for info in check_info %}
           <tr>
@@ -58,9 +62,10 @@
           </tr>
         {% endfor %}
         </tbody>
+
       </table>
     </div><!-- End Table Of Checks -->
 
   </div>
-</main><!-- End Reports Of Check Url -->
+  </main><!-- End Reports Of Check Url -->
 {% endblock %}
