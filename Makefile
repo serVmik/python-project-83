@@ -1,6 +1,6 @@
 #<-- ======= Developed Variables ======= -->
 PORT ?= 8000
-DB_NAME = page-analyzer
+DB_NAME = page_analyzer
 #<-- End Developed Variables -->
 
 #<-- ======= Start Project ======= -->
