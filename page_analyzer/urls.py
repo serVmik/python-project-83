@@ -9,7 +9,7 @@ def normalize_url(url):
     return f'{parsed_url.scheme}://{parsed_url.netloc}'
 
 
-def check_url_for_errors(entered_url, url):
+def validate_url(entered_url, url):
     url_error = []
 
     if len(entered_url) > 255:
@@ -22,7 +22,7 @@ def check_url_for_errors(entered_url, url):
     return url_error
 
 
-def get_requests_info(url):
+def get_requests(url):
     try:
         r = requests.get(url)
         soup = BeautifulSoup(r.text, 'html.parser')

@@ -27,7 +27,7 @@ def add_url(url):
         return id_
 
 
-def get_id(url):
+def get_url_id(url):
     conn = connect()
     with conn.cursor() as curs:
         curs.execute('SELECT id FROM urls WHERE name = %s', (url,))
@@ -35,14 +35,14 @@ def get_id(url):
         return id_
 
 
-def get_url_info(id_):
+def get_url(id_):
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute('SELECT * FROM urls WHERE id = %s', (id_,))
         return curs.fetchone()
 
 
-def get_urls_info():
+def get_urls():
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute(
@@ -60,7 +60,7 @@ def get_urls_info():
         return curs.fetchall()
 
 
-def add_check_to_url_checks(url_id, requests_info):
+def add_check(url_id, requests_info):
     conn = connect()
     with conn.cursor() as curs:
         curs.execute(
@@ -76,7 +76,7 @@ def add_check_to_url_checks(url_id, requests_info):
         conn.commit()
 
 
-def get_check_info(id_):
+def get_check(id_):
     conn = connect()
     with conn.cursor(cursor_factory=NamedTupleCursor) as curs:
         curs.execute(
