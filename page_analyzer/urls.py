@@ -4,8 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def normalize_url(url):
-    parsed_url = urlparse(url)
+def normalize_url(entered_url):
+    parsed_url = urlparse(entered_url)
     return f'{parsed_url.scheme}://{parsed_url.netloc}'
 
 
@@ -22,9 +22,9 @@ def validate_url(entered_url):
     return url_errors
 
 
-def get_requests(url):
+def get_requests(url_name):
     try:
-        r = requests.get(url)
+        r = requests.get(url_name)
         soup = BeautifulSoup(r.text, 'html.parser')
         desc = soup.find('meta', attrs={'name': 'description'})
         url_requests = {
