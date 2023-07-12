@@ -17,21 +17,21 @@ def index():
 
 @app.post('/urls')
 def post_url():
-    entered_url = request.form.get('url')
+    entered_url = request.form.get('entered_url')
     messages = urls.validate_url(entered_url)
     if messages:
         [flash(*message) for message in messages]
         return render_template('index.html',
-                               url=entered_url), 422
+                               entered_url=entered_url), 422
 
     connection = db.connect(CONN_STRING)
-    url = urls.normalize_url(entered_url)
+    url_name = urls.normalize_url(entered_url)
 
-    if db.is_url_exists(connection, url):
-        url_id = db.get_url_id(connection, url)
+    if db.is_url_exists(connection, url_name):
+        url_id = db.get_url_id(connection, url_name)
         flash('Страница уже существует', 'info')
     else:
-        url_id = db.add_url(connection, url)
+        url_id = db.add_url(connection, url_name)
         flash('Страница успешно добавлена', 'success')
 
     return redirect(url_for('show_url',
@@ -41,19 +41,19 @@ def post_url():
 @app.get('/urls')
 def show_urls():
     connection = db.connect(CONN_STRING)
-    urls_info = db.get_urls(connection)
+    urls_ = db.get_urls(connection)
     return render_template('urls.html',
-                           urls_info=urls_info)
+                           urls_=urls_)
 
 
 @app.get('/urls/<int:url_id>')
 def show_url(url_id):
     connection = db.connect(CONN_STRING)
-    url_info = db.get_url(connection, url_id)
-    check_info = db.get_check(connection, url_id)
+    url_ = db.get_url(connection, url_id)
+    url_checks = db.get_check(connection, url_id)
     return render_template('url.html',
-                           url_info=url_info,
-                           check_info=check_info)
+                           url_=url_,
+                           url_checks=url_checks)
 
 
 @app.post('/urls/<int:url_id>/checks')
@@ -68,8 +68,8 @@ def check_url(url_id):
         db.add_check(connection, url_id, requests_info)
         flash('Страница успешно проверена', 'success')
 
-    url_info = db.get_url(connection, url_id)
-    check_info = db.get_check(connection, url_id)
+    url_ = db.get_url(connection, url_id)
+    url_checks = db.get_check(connection, url_id)
     return render_template('url.html',
-                           url_info=url_info,
-                           check_info=check_info)
+                           url_=url_,
+                           url_checks=url_checks)
