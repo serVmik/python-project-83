@@ -1,10 +1,31 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = ""
+description = "Page Analyzer is a site that analyzes websites for SEO suitability."
 authors = ["Sergei Mikurov <454004@mail.ru>"]
 readme = "README.md"
-packages = [{include = "page_analyzer"}]
+homepage = "https://python-project-83-production-f22f.up.railway.app/"
+repository = "https://github.com/serVmik/python-project-83"
+documentation = "https://github.com/serVmik/python-project-83"
+keywords = ["SEO", "website parsing"]
+classifiers = [
+    "Framework :: Flask",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Legal Industry",
+    "License :: Freeware",
+    "Natural Language :: Russian",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: SQL",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Education",
+    "Topic :: Education :: Testing",
+    "Topic :: Internet",
+]
+packages = [
+    { include = "page_analyzer" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
