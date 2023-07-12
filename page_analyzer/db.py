@@ -6,26 +6,24 @@ def connect(conn_string):
     return psycopg2.connect(conn_string)
 
 
-def is_url_exists(connection, url_name):
+def is_url_exists(connection, url):
     with connection.cursor() as curs:
-        curs.execute('SELECT * FROM urls WHERE name = %s', (url_name,))
+        curs.execute('SELECT * FROM urls WHERE name = %s', (url,))
         db_answer = curs.fetchone()
         return True if db_answer else False
 
 
-def add_url(connection, url_name):
+def add_url(connection, url):
     with connection.cursor() as curs:
-        curs.execute(
-            'INSERT INTO urls (name) VALUES (%s) RETURNING id', (url_name,)
-        )
+        curs.execute('INSERT INTO urls (name) VALUES (%s) RETURNING id', (url,))
         url_id, = curs.fetchone()
         connection.commit()
         return url_id
 
 
-def get_url_id(connection, url_name):
+def get_url_id(connection, url):
     with connection.cursor() as curs:
-        curs.execute('SELECT id FROM urls WHERE name = %s', (url_name,))
+        curs.execute('SELECT id FROM urls WHERE name = %s', (url,))
         url_id, = curs.fetchone()
         return url_id
 

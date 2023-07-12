@@ -19,7 +19,7 @@
         </thead>
 
         <tbody>
-        {% for url in urls_ %}
+        {% for url in urls_info %}
           <tr>
             <td>{{ url.id }}</td>
             <td><a href="{{ url_for('show_url', url_id=url.id) }}">{{ url.name }}</a></td>
