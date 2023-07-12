@@ -27,13 +27,13 @@ def get_requests(url):
         r = requests.get(url)
         soup = BeautifulSoup(r.text, 'html.parser')
         desc = soup.find('meta', attrs={'name': 'description'})
-        requests_info = {
+        url_requests = {
             'status_code': r.status_code,
             'h1': soup.h1.get_text().strip() if soup.h1 else '',
             'title': soup.title.string if soup.title else '',
             'description': desc['content'].strip() if desc else ''
         }
-        return requests_info
+        return url_requests
 
     except requests.ConnectionError:
         return None

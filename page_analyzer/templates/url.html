@@ -13,15 +13,15 @@
         <tbody>
           <tr>
             <td>ID</td>
-            <td>{{ url_info.id }}</td>
+            <td>{{ url_.id }}</td>
           </tr>
           <tr>
             <td>Имя</td>
-            <td>{{ url_info.name }}</td>
+            <td>{{ url_.name }}</td>
           </tr>
           <tr>
             <td>Дата создания</td>
-            <td>{{ url_info.created_at }}</td>
+            <td>{{ url_.created_at }}</td>
           </tr>
         </tbody>
 
@@ -31,7 +31,7 @@
     <h2 class="mt-5 mb-3">Проверки</h2>
 
     <!-- ======= Start Checking Form ====== -->
-    <form method="post" action="{{ url_for('check_url', url_id=url_info.id) }}">
+    <form method="post" action="{{ url_for('check_url', url_id=url_.id) }}">
       <input type="submit" class="btn btn-primary" value="Запустить проверку">
     </form><!-- End Start Checking Form -->
 
@@ -51,14 +51,14 @@
         </thead>
 
         <tbody>
-        {% for info in check_info %}
+        {% for url_ in url_check %}
           <tr>
-            <td>{{ info.check_id }}</td>
-            <td>{{ info.status_code }}</td>
-            <td>{{ info.h1 }}</td>
-            <td>{{ info.title }}</td>
-            <td>{{ info.description }}</td>
-            <td>{{ info.created_at }}</td>
+            <td>{{ url_.check_id }}</td>
+            <td>{{ url_.status_code }}</td>
+            <td>{{ url_.h1 }}</td>
+            <td>{{ url_.title }}</td>
+            <td>{{ url_.description }}</td>
+            <td>{{ url_.created_at }}</td>
           </tr>
         {% endfor %}
         </tbody>
