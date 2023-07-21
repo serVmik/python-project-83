@@ -6,5 +6,3 @@ setting.py
 coverage.xml
 venv/
 dev/
-dist/
-tests/
