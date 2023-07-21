@@ -37,10 +37,13 @@ package-install:
 lint:
 	poetry run flake8 page_analyzer
 
+test:
+	poetry run pytest
+
 selfcheck:
 	poetry check
 
-check: lint
+check: lint test
 #<-- End Check -->
 
 .PHONY: dev install test lint selfcheck check build gendiff
