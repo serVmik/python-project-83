@@ -38,16 +38,19 @@ package-install:
 
 
 #<!-- ======= Checks ======= -->
+lint:
+	poetry run flake8 page_analyzer tests
+
 test-url:
 	poetry run pytest tests/test_url.py -vv --cov -s
 
-lint:
-	poetry run flake8 page_analyzer tests
+test-coverage:
+	poetry run pytest --cov=page_analyzer --cov-report xml
 
 selfcheck:
 	poetry check
 
-check: lint test-url
+check: lint test-url test-coverage
 #<!-- End Check -->
 
 
