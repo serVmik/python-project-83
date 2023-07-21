@@ -1,4 +1,3 @@
-import pytest
 from page_analyzer.urls import validate_url
 
 
