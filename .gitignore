@@ -6,5 +6,5 @@ setting.py
 coverage.xml
 venv/
 dev/
-test/
 dist/
+tests/test_by_PP.py

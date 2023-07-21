@@ -26,4 +26,6 @@ jobs:
         # Run linter and pytest
       - name: Run linter and pytest
         run: |
+#          pip install pytest-playwright
+#          playwright install
           make check
