@@ -6,4 +6,3 @@ setting.py
 coverage.xml
 venv/
 dev/
-tests/test_playwright.py
