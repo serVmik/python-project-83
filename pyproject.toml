@@ -44,6 +44,7 @@ pytest-cov = "^4.1.0"
 
 [tool.poetry.group.playwright.dependencies]
 pytest-playwright = "^0.3.3"
+playwright = "^1.36.0"
 
 [build-system]
 requires = ["poetry-core"]
