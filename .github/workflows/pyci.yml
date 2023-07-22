@@ -22,12 +22,14 @@ jobs:
         run: |
           pip install poetry
           make install
+          pip install bootstrap-py
+          playwright install
+          playwright install-deps
 
         # Run linter and pytest
       - name: Run linter and pytest
         run: |
           make check
-
 
         # Test & publish code coverage for Code Climate
       - name: Test & publish code coverage

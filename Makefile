@@ -45,12 +45,12 @@ test-coverage:
 	poetry run pytest --cov=page_analyzer --cov-report xml
 
 test-pw:
-	poetry run pytest tests/test_playwright.py
+	poetry run pytest tests/test_with_playwright.py
 
 selfcheck:
 	poetry check
 
-check: lint test-url test-coverage test-pw
+check: lint test-url test-pw test-coverage
 #<!-- End Check -->
 
 
