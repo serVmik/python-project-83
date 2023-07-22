@@ -16,9 +16,6 @@ start:
 #<!-- ======= Database ======= -->
 schema-db:
 	psql $(DB_NAME) < database.sql
-
-show-db-urls:
-	psql -d urls
 #<!-- End Database -->
 
 
