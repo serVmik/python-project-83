@@ -6,3 +6,4 @@ setting.py
 coverage.xml
 venv/
 dev/
+tests/fixtures/screenshots/
