@@ -39,7 +39,7 @@ lint:
 	poetry run flake8 page_analyzer tests
 
 test-url:
-	poetry run pytest tests/test_url.py -vv --cov -s
+	poetry run pytest tests/test_urls.py -vv -s --cov
 
 test-coverage:
 	poetry run pytest --cov=page_analyzer --cov-report xml
@@ -54,4 +54,4 @@ check: lint test-url test-pw test-coverage
 #<!-- End Check -->
 
 
-.PHONY: dev install test lint selfcheck check build
+.PHONY: dev install test lint selfcheck check build test-url
