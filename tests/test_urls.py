@@ -1,5 +1,5 @@
 import pytest
-from page_analyzer.urls import normalize_url, validate_url, get_requests
+from page_analyzer.urls import normalize_url, validate_url
 
 
 @pytest.mark.parametrize('url_entered, url_name', [
