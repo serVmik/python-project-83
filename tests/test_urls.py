@@ -35,14 +35,3 @@ def test_validate_url_empty_and_too_long():
     assert ('URL превышает 255 символов', 'danger') not in validate_url(
         'https://itisshorturl.com'
     )
-
-
-# def test_get_requests():
-#     url_requests_expected = {
-#         'status_code': 200,
-#         'h1': 'h1 found',
-#         'title': 'Title found',
-#         'description': 'description found'
-#     }
-#     url_requests = ''
-#     assert url_requests == url_requests_expected
