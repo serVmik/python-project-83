@@ -1,9 +1,5 @@
 import pytest
-
 from page_analyzer.urls import normalize_url, validate_url
-from tests.fixtures.fixtures_urls import (
-    give_one_by_one,
-    urls_incorrect, url_too_long)
 
 
 @pytest.mark.parametrize('url_entered, url_name', [
@@ -18,19 +14,17 @@ def test_normalize_url(url_entered, url_name):
     assert url_name == url_parsed
 
 
+@pytest.mark.parametrize('urls_incorrect', [
+    ('htp://sorry.jo'), ('http;//just_do.it'), ('http://benq,ru')])
+def test_url_incorrect(urls_incorrect,):
+    assert ('Некорректный URL', 'danger') in validate_url(urls_incorrect)
+
+
 def test_url_empty_and_too_long():
-    (message_empty, _) = validate_url('')
-    (message_too_long, _) = validate_url(url_too_long)
-    assert message_empty == ('URL обязателен', 'danger')
-    assert message_too_long == ('URL превышает 255 символов', 'danger')
-
-
-@pytest.fixture
-def urls_incorrect_():
-    return urls_incorrect
-
-
-@give_one_by_one
-def test_url_incorrect(urls_incorrect_):
-    (message) = validate_url(urls_incorrect_)
-    assert message == ('Некорректный URL', 'danger')
+    assert ('URL обязателен', 'danger') in validate_url('')
+    assert ('URL превышает 255 символов', 'danger') in validate_url('''
+    https://itistoooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    ooooooooooooooooooooooooooooooooooooooooooooooooooolongurl.com''')
