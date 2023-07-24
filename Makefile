@@ -54,4 +54,9 @@ check: lint test-url
 #<!-- End Check -->
 
 
+#<!-- ======= render.com ======= -->
+build-render: install schema-db
+#<!-- End render.com -->
+
+
 .PHONY: dev install test lint selfcheck check build test-url
