@@ -66,11 +66,10 @@ $ make dev
 ```
 Go to the browser address http://localhost:5000/  
 Enter a verified address.
-
-![index_1](https://github.com/serVmik/python-project-83/assets/56305558/3c4c0cfd-4e86-428a-bc2d-8421e6b2187a)
+![index_1](https://github.com/serVmik/python-project-83/assets/56305558/1410a83a-fd85-4e4a-beb8-e2f8ee7ab3b3)
 Run a check.  
-![urls_1](https://github.com/serVmik/python-project-83/assets/56305558/e7d5c494-a2ea-4c8c-a7c7-2ebc9dc6f0b4)
+![urls_1](https://github.com/serVmik/python-project-83/assets/56305558/e9f7a290-380f-43a7-85ec-ae6b8882b6be)
 Get results.
-![urls_2](https://github.com/serVmik/python-project-83/assets/56305558/853397fc-68e7-4c74-90cd-04ba46b5d056)
+![urls_2](https://github.com/serVmik/python-project-83/assets/56305558/39503faf-41fe-4936-91a6-68aafb190ea0)
 The application saves the added sites.
-![urls_3](https://github.com/serVmik/python-project-83/assets/56305558/f8907e89-7abc-4ce9-ac1f-fe5a2cc7fac6)
+![urls_3](https://github.com/serVmik/python-project-83/assets/56305558/52a36c71-5c0f-4ead-bb4d-e39735f5671d)
