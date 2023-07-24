@@ -69,6 +69,10 @@ $ make dev
 ```
 and go to the browser address http://localhost:5000/  
 
-!!! Now you can use it application.  
+![index_1](https://github.com/serVmik/python-project-83/assets/56305558/3c4c0cfd-4e86-428a-bc2d-8421e6b2187a)
 
-**How to use the app**  
+![urls_1](https://github.com/serVmik/python-project-83/assets/56305558/e7d5c494-a2ea-4c8c-a7c7-2ebc9dc6f0b4)
+
+![urls_2](https://github.com/serVmik/python-project-83/assets/56305558/853397fc-68e7-4c74-90cd-04ba46b5d056)
+
+![urls_3](https://github.com/serVmik/python-project-83/assets/56305558/f8907e89-7abc-4ce9-ac1f-fe5a2cc7fac6)
