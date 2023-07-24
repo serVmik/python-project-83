@@ -17,16 +17,16 @@ def index():
 
 @app.post('/urls')
 def post_url():
-    entered_url = request.form.get('url')
+    url_entered = request.form.get('url')
 
-    messages = urls.validate_url(entered_url)
+    messages = urls.validate_url(url_entered)
     if messages:
         [flash(*message) for message in messages]
         return render_template('index.html',
-                               url=entered_url), 422
+                               url=url_entered), 422
 
     connection = db.connect(CONN_STRING)
-    url_name = urls.normalize_url(entered_url)
+    url_name = urls.normalize_url(url_entered)
 
     if db.is_url_exists(connection, url_name):
         url_id = db.get_url_id(connection, url_name)
@@ -50,10 +50,10 @@ def show_urls():
 @app.get('/urls/<int:url_id>')
 def show_url(url_id):
     connection = db.connect(CONN_STRING)
-    url_ = db.get_url(connection, url_id)
+    url = db.get_url(connection, url_id)
     url_check = db.get_check(connection, url_id)
     return render_template('url.html',
-                           url_=url_,
+                           url=url,
                            url_check=url_check)
 
 
@@ -69,8 +69,8 @@ def check_url(url_id):
         db.add_check(connection, url_id, url_requests)
         flash('Страница успешно проверена', 'success')
 
-    url_ = db.get_url(connection, url_id)
+    url = db.get_url(connection, url_id)
     url_check = db.get_check(connection, url_id)
     return render_template('url.html',
-                           url_=url_,
+                           url=url,
                            url_check=url_check)

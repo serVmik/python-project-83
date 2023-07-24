@@ -18,26 +18,23 @@ The application saves it.
 **How to start using the app:**  
 For install and use the application you will need the following applications: 
 [git](https://git-scm.com/book/ru/v2/%D0%92%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5-%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-Git),
-[poetry](https://python-poetry.org/docs/). 
+[poetry](https://python-poetry.org/docs/), 
+[postgresql](https://www.postgresql.org/). 
 You can install them:  
 ```
 $ sudo apt update
 $ sudo apt install git-all  
 $ sudo apt install curl
-$ curl -sSL https://install.python-poetry.org | python3 -
+$ curl -sSL https://install.python-poetry.org | POETRY_HOME=/etc/poetry python3 -
 ```
-You may need to export PATH, 
-how to do it will be indicated in the installation log of 'poetry'.  
-
 Clone the application from GitHub and install the necessary
-libraries using the 'make install' command:
+libraries using the 'make install' command.  
+All commands starting with '$ make' are executed in the application directory.  
 ```
 $ git clone git@github.com:serVmik/python-project-83.git  
 $ cd python-project-83  
 $ make install  
 ```
-All commands starting with '$ make' are executed in the application directory.  
-
 Install postgresql:  
 ```
 $ sudo apt install postgresql
@@ -52,13 +49,13 @@ $ make schema-db
 You may change database in file 'Makefile'.  
 
 You need to set a password for the user, for example for the 'postgres' ROLE.  
-Password ROLE 'postgres' it your choice.   
 ```
 $ sudo -u postgres psql  
 postgres=# ALTER ROLE postgres PASSWORD 'password';
 ```
 Create '.env' file in the root folder and add the following variables to it.  
-'Secret_key' it your choice.  
+Set the secret key.  
+Enter user password.
 ```  
 SECRET_KEY={secret_key}  
 DATABASE_URL=postgresql://postgres:{password}@localhost:5432/page_analyzer  
@@ -67,12 +64,13 @@ Run the application local:
 ```
 $ make dev  
 ```
-and go to the browser address http://localhost:5000/  
+Go to the browser address http://localhost:5000/  
+Enter a verified address.
 
 ![index_1](https://github.com/serVmik/python-project-83/assets/56305558/3c4c0cfd-4e86-428a-bc2d-8421e6b2187a)
-
+Run a check.  
 ![urls_1](https://github.com/serVmik/python-project-83/assets/56305558/e7d5c494-a2ea-4c8c-a7c7-2ebc9dc6f0b4)
-
+Get results.
 ![urls_2](https://github.com/serVmik/python-project-83/assets/56305558/853397fc-68e7-4c74-90cd-04ba46b5d056)
-
+The application saves the added sites.
 ![urls_3](https://github.com/serVmik/python-project-83/assets/56305558/f8907e89-7abc-4ce9-ac1f-fe5a2cc7fac6)
