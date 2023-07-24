@@ -39,10 +39,7 @@ lint:
 	poetry run flake8 page_analyzer tests
 
 test-url:
-	poetry run pytest tests/test_urls.py -vv -s --cov
-
-test-coverage:
-	poetry run pytest --cov=page_analyzer --cov-report xml
+	poetry run pytest tests/test_urls.py -vv -s --cov=page_analyzer
 
 test-pw:
 	poetry run pytest tests/test_by_playwright.py
