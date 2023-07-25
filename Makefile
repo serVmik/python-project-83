@@ -38,8 +38,8 @@ package-install:
 lint:
 	poetry run flake8 page_analyzer tests
 
-test-url:
-	poetry run pytest tests/test_urls.py -vv -s
+test:
+	poetry run pytest --cov=page_analyzer -vv -s
 
 test-pw:
 	poetry run pytest tests/test_by_playwright.py
@@ -50,7 +50,7 @@ test-coverage:
 selfcheck:
 	poetry check
 
-check: lint test-url
+check: lint test
 #<!-- End Check -->
 
 
@@ -59,4 +59,4 @@ build-render: install schema-db
 #<!-- End render.com -->
 
 
-.PHONY: dev install test lint selfcheck check build test-url
+.PHONY: dev install test lint selfcheck check build
