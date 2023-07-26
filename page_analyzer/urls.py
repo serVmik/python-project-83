@@ -5,18 +5,18 @@ from bs4 import BeautifulSoup
 
 
 def normalize_url(url):
-    parsed_url = urlparse(url)
-    return f'{parsed_url.scheme}://{parsed_url.netloc}'
+    url_parsed = urlparse(url)
+    return f'{url_parsed.scheme}://{url_parsed.netloc}'
 
 
-def validate_url(entered_url):
+def validate_url(url_entered):
     url_errors = []
 
-    if len(entered_url) > 255:
+    if len(url_entered) > 255:
         url_errors.append(('URL превышает 255 символов', 'danger'))
-    if entered_url == '':
+    if url_entered == '':
         url_errors.append(('URL обязателен', 'danger'))
-    if not validators.url(entered_url):
+    if not validators.url(url_entered):
         url_errors.append(('Некорректный URL', 'danger'))
 
     return url_errors
