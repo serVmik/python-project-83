@@ -48,17 +48,17 @@ $ make schema-db
 ```
 You may change database in file 'Makefile'.  
 
-You need to set a password for the user, for example for the 'postgres' ROLE.  
+You need to set a password for the user_name, for example for the 'postgres' ROLE.  
 ```
 $ sudo -u postgres psql  
 postgres=# ALTER ROLE postgres PASSWORD 'password';
 ```
 Create '.env' file in the root folder and add the following variables to it.  
 Set the secret key.  
-Enter user password.
+Enter password for user_name.
 ```  
 SECRET_KEY={secret_key}  
-DATABASE_URL=postgresql://postgres:{password}@localhost:5432/page_analyzer  
+DATABASE_URL=postgresql://{user_name}:{password}@localhost:5432/page_analyzer  
 ```  
 Run the application local:  
 ```
