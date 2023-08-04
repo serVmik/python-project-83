@@ -54,10 +54,9 @@ check: lint test
 #<!-- End Check -->
 
 
-#<!-- ======= render.com ======= -->
-build-render:
-	pip install --upgrade pip && pip install poetry && apt-get install python3.10 && make install
-#<!-- End render.com -->
 
+#<!-- ======= render.com ======= -->
+build-render: install schema-db
+#<!-- End render.com -->
 
 .PHONY: dev install test lint selfcheck check build
