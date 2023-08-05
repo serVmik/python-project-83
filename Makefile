@@ -1,5 +1,5 @@
 PORT ?= 8000
-DATABASE_URL = page_analyzer
+DB_URL = page_analyzer
 
 dev:
 	poetry run flask --app page_analyzer:app --debug run
@@ -11,9 +11,12 @@ install:
 	poetry install
 
 schema-db:
+	psql $(DB_URL) < database.sql
+
+schema-db-render:
 	psql $(DATABASE_URL) < database.sql
 
-build: install schema-db
+build-render: install schema-db-render
 
 publish:
 	poetry publish --dry-run
