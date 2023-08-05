@@ -4,7 +4,7 @@
 </a> <a href="https://codeclimate.com/github/serVmik/python-project-83/test_coverage"><img src="https://api.codeclimate.com/v1/badges/e4d435f6369fc2ca0214/test_coverage" /></a>
 
 ### Application description:  
-[Page Analyzer is a site](https://servmik-python-project-83.onrender.com)
+[Page Analyzer is a site](https://servmik-python-project-83-5lp0.onrender.com) 
 that analyzes websites for 
 [SEO](https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%B8%D1%81%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F)
 suitability.  
