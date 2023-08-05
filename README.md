@@ -27,6 +27,7 @@ $ sudo apt install git-all
 $ sudo apt install curl
 $ curl -sSL https://install.python-poetry.org | POETRY_HOME=/etc/poetry python3 -
 ```
+
 Clone the application from GitHub and install the necessary
 libraries using the 'make install' command.  
 All commands starting with '$ make' are executed in the application directory.  
@@ -35,24 +36,31 @@ $ git clone git@github.com:serVmik/python-project-83.git
 $ cd python-project-83  
 $ make install  
 ```
+
 Install postgresql:  
 ```
 $ sudo apt install postgresql
 ```
 
+You need create a user:
+```
+$ sudo -u postgres createuser --createdb {user_name}  
+```
+
+You need to set a password for the user_name.  
+```
+$ sudo -u postgres psql  
+postgres=# ALTER ROLE {user_name} PASSWORD '{password}';
+postgres=# \q
+```
+
 Next, create the 'page_analyzer' database and tables. 
 'make schema-db' command will create the tables only in the 'page_analyzer' database:
 ```
-$ sudo -u postgres createdb --owner=postgres page_analyzer  
+$ sudo -u postgres createdb --owner={user_name} page_analyzer  
 $ make schema-db
 ```
-You may change database in file 'Makefile'.  
 
-You need to set a password for the user_name, for example for the 'postgres' ROLE.  
-```
-$ sudo -u postgres psql  
-postgres=# ALTER ROLE postgres PASSWORD 'password';
-```
 Create '.env' file in the root folder and add the following variables to it.  
 Set the secret key.  
 Enter password for user_name.
@@ -60,10 +68,12 @@ Enter password for user_name.
 SECRET_KEY={secret_key}  
 DATABASE_URL=postgresql://{user_name}:{password}@localhost:5432/page_analyzer  
 ```  
+
 Run the application local:  
 ```
 $ make dev  
 ```
+
 Go to the browser address http://localhost:5000/  
 ### Enter a verified address.
 ![index_1](https://github.com/serVmik/python-project-83/assets/56305558/1410a83a-fd85-4e4a-beb8-e2f8ee7ab3b3)
