@@ -22,18 +22,18 @@ def validate_url(url_entered):
     return url_errors
 
 
-def get_requests(url):
+def get_page_data(url):
     try:
         r = requests.get(url)
         soup = BeautifulSoup(r.text, 'html.parser')
         desc = soup.find('meta', attrs={'name': 'description'})
-        url_requests = {
+        page_data = {
             'status_code': r.status_code,
             'h1': soup.h1.get_text().strip() if soup.h1 else '',
             'title': soup.title.string if soup.title else '',
             'description': desc['content'].strip() if desc else ''
         }
-        return url_requests
+        return page_data
 
     except requests.ConnectionError:
         return None
