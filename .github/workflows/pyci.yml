@@ -21,6 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install poetry
+          pip install playwright
           make install
 
         # Run linter and pytest

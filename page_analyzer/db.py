@@ -50,7 +50,8 @@ def is_url_exists(connection, url_name):
             FROM urls
             WHERE name = %s
             ''',
-            (url_name,))
+            (url_name,)
+        )
         db_answer = curs.fetchone()
 
         return True if db_answer else False

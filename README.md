@@ -75,11 +75,12 @@ $ make dev
 ```
 
 Go to the browser address http://localhost:5000/  
-### Enter a verified address.
+### How to use the app:  
+#### Enter a verified address.
 ![index_1](https://github.com/serVmik/python-project-83/assets/56305558/1410a83a-fd85-4e4a-beb8-e2f8ee7ab3b3)
-### Run a check.  
+#### Run a check.  
 ![urls_1](https://github.com/serVmik/python-project-83/assets/56305558/e9f7a290-380f-43a7-85ec-ae6b8882b6be)
-### Get results.
+#### Get results.
 ![urls_2](https://github.com/serVmik/python-project-83/assets/56305558/39503faf-41fe-4936-91a6-68aafb190ea0)
-### The application saves verified sites.
+#### The application saves verified sites.
 ![urls_3](https://github.com/serVmik/python-project-83/assets/56305558/52a36c71-5c0f-4ead-bb4d-e39735f5671d)

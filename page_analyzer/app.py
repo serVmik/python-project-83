@@ -89,8 +89,7 @@ def show_url(url_id):
 def check_url(url_id):
     connection = db.connect(CONN_STRING)
     url = db.get_url_by_id(connection, url_id)
-    url_name = url.name
-    url_requests = urls.get_page_data(url_name)
+    url_requests = urls.get_page_data(url.name)
 
     if not url_requests or url_requests.get('status_code') != 200:
         flash('Произошла ошибка при проверке', 'danger')

@@ -31,7 +31,7 @@ test:
 	poetry run pytest --cov=page_analyzer -vv -s
 
 test-pw:
-	poetry run pytest tests/test_by_playwright.py
+	poetry run pytest --cov=page_analyzer tests/test_by_playwright.py -v -s
 
 test-coverage:
 	poetry run pytest --cov=page_analyzer --cov-report xml

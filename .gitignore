@@ -1,10 +1,8 @@
 .idea/
 __pycache__/
 .env
-setting.py
 .coverage
 coverage.xml
-venv/
-dev/
 dist/
-tests/fixtures/screenshots/
+
+tests/test_db.py
