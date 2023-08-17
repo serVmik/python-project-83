@@ -36,7 +36,7 @@ def post_url():
         return render_template(
             'index.html',
             url=url_entered
-        )
+        ), 422
 
     connection = db.connect(CONN_STRING)
     url_name = urls.normalize_url(url_entered)

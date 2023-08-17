@@ -92,7 +92,7 @@ def get_urls(connection):
             '''
             SELECT urls.id AS id,
                    urls.name AS name,
-                   url_checks.created_at AS created_at,
+                   url_checks.checked_at AS checked_at,
                    url_checks.status_code AS status_code
             FROM urls
             LEFT JOIN url_checks ON urls.id = url_checks.url_id
@@ -117,7 +117,7 @@ def get_checks(connection, url_id):
                    h1,
                    title,
                    description,
-                   created_at
+                   checked_at
             FROM url_checks
             WHERE %s = url_id
             ''', (url_id,)

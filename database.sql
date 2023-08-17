@@ -14,5 +14,5 @@ CREATE TABLE url_checks (
     h1 VARCHAR(255),
     title VARCHAR(255),
     description text,
-    created_at DATE DEFAULT CURRENT_DATE
+    checked_at DATE DEFAULT CURRENT_DATE
 );
