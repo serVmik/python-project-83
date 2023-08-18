@@ -4,5 +4,4 @@ __pycache__/
 .coverage
 coverage.xml
 dist/
-
 tests/test_db.py

@@ -71,6 +71,7 @@ DATABASE_URL=postgresql://{user_name}:{password}@localhost:5432/page_analyzer
 
 Run the application local:  
 ```
+$ poetry shell
 $ make dev  
 ```
 
