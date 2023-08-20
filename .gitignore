@@ -5,3 +5,4 @@ __pycache__/
 coverage.xml
 dist/
 tests/test_db.py
+tests/fixtures/
