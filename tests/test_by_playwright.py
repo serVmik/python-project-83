@@ -6,25 +6,28 @@ from playwright.sync_api import (
 
 from page_analyzer import db
 from page_analyzer.app import CONN_STRING
-from tests.conftest import drop_tables
 
 
 def run(p):
-    page_index = 'http://127.0.0.1:5000'
-    page_index_title = 'Анализатор страниц'
-    page_index_placeholder = 'https://www.example.com'
     url_entered1 = 'https://ru.hexlet.io/my'
     url_entered2 = 'https://yandex.ru/musik'
     url_name1 = 'https://ru.hexlet.io'
     url_name2 = 'https://yandex.ru'
     url_empty = ''
+    page_index = 'http://127.0.0.1:5000'
+    page_index_title = 'Анализатор страниц'
+    page_index_placeholder = 'https://www.example.com'
     page_url_name1 = 'http://127.0.0.1:5000/urls/1'
     page_url_name2 = 'http://127.0.0.1:5000/urls/2'
-    page_next = 'http://127.0.0.1:5000/urls'
+    page_urls = 'http://127.0.0.1:5000/urls'
 
     # drop db tables
     connection = db.connect(CONN_STRING)
-    drop_tables(connection)
+    with open('./database.sql', 'r') as f:
+        query = f.read()
+    with connection.cursor() as curs:
+        curs.execute(query)
+        connection.commit()
     db.close(connection)
 
     browser = p.chromium.launch(headless=False, slow_mo=500)
@@ -48,7 +51,7 @@ def run(p):
 
     # urls
     page.get_by_text('Сайты').click()
-    expect(page).to_have_url(re.compile(page_next))
+    expect(page).to_have_url(re.compile(page_urls))
     page.get_by_text('https://ru.hexlet.io').click()
 
     # urls/1
@@ -68,7 +71,7 @@ def run(p):
     page.get_by_role('button').click()
     expect(page.get_by_text("URL обязателен")).to_be_visible()
     expect(page.get_by_text("Некорректный URL")).to_be_visible()
-    expect(page).to_have_url(re.compile(page_next))
+    expect(page).to_have_url(re.compile(page_urls))
 
     # urls/2
     page.get_by_role('textbox').fill(url_entered2)
