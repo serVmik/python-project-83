@@ -23,7 +23,7 @@ class TestValidateUrl:
     ]
     empty_url = ''
     not_empty_url = 'https://mail.ru'
-    too_long_url = f'https://itistoo{"o" * 230}longurl.com'
+    too_long_url = 'o' * 256
     short_url = 'https://itisshorturl.com'
 
     @pytest.mark.parametrize('url_incorrect, url_correct', urls)
