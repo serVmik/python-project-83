@@ -9,45 +9,80 @@ from page_analyzer.app import CONN_STRING
 from tests.conftest import drop_tables
 
 
-with sync_playwright() as p:
-    page_home = 'http://127.0.0.1:5000'
-    url_entered = 'https://ru.hexlet.io/my'
-    url_name = 'https://ru.hexlet.io'
-    page_next1 = 'http://127.0.0.1:5000/urls/1'
+def run(p):
+    page_index = 'http://127.0.0.1:5000'
+    page_index_title = 'Анализатор страниц'
+    page_index_placeholder = 'https://www.example.com'
+    url_entered1 = 'https://ru.hexlet.io/my'
+    url_entered2 = 'https://yandex.ru/musik'
+    url_name1 = 'https://ru.hexlet.io'
+    url_name2 = 'https://yandex.ru'
+    url_empty = ''
+    page_url_name1 = 'http://127.0.0.1:5000/urls/1'
+    page_url_name2 = 'http://127.0.0.1:5000/urls/2'
+    page_next = 'http://127.0.0.1:5000/urls'
 
-    print('\n\n' + 'Run sync_playwright ...')
-
+    # drop db tables
     connection = db.connect(CONN_STRING)
     drop_tables(connection)
     db.close(connection)
-    print('tables of db dropped!')
 
     browser = p.chromium.launch(headless=False, slow_mo=500)
     page = browser.new_page()
 
-    # Home page
-    print(f'go to page_home "{page_home}"')
-    page.goto(page_home)
-    # Expect a title "to contain" a substring.
-    expect(page).to_have_title(re.compile('Анализатор страниц'))
-    expect(page.get_by_role("heading", name='Анализатор страниц')).to_be_visible()
-
-    print(f'fill in the textbox with url_entered "{url_entered}"')
-    page.get_by_role('textbox').fill(url_entered)
-    print('click button "Проверить"')
+    # index
+    page.goto(page_index)
+    expect(page).to_have_title(re.compile(page_index_title))
+    expect(page.get_by_role('heading', name=page_index_title)).to_be_visible()
+    placeholder = page.get_by_placeholder(page_index_placeholder)
+    expect(placeholder).to_have_attribute('placeholder', page_index_placeholder)
+    placeholder.fill(url_entered1)
     page.get_by_role('button', name='Проверить').click()
 
-    # urls
-    print(f'testing have url_next1 "{page_next1}"')
-    expect(page).to_have_url(re.compile(page_next1))
-
+    # urls/1
+    expect(page).to_have_url(re.compile(page_url_name1))
+    expect(page.get_by_text("Страница успешно добавлена")).to_be_visible()
+    expect(page.get_by_text(f'Сайт: {url_name1}')).to_be_visible()
     page.get_by_role('button').click()
+    expect(page.get_by_text("Страница успешно проверена")).to_be_visible()
 
+    # urls
     page.get_by_text('Сайты').click()
-
+    expect(page).to_have_url(re.compile(page_next))
     page.get_by_text('https://ru.hexlet.io').click()
 
+    # urls/1
     page.get_by_text('Анализатор страниц').click()
 
+    # index
+    page.get_by_role('textbox').fill(url_entered1)
+    page.get_by_role('button').click()
+
+    # urls/1
+    expect(page).to_have_url(re.compile(page_url_name1))
+    expect(page.get_by_text("Страница уже существует")).to_be_visible()
+    page.get_by_text('Анализатор страниц').click()
+
+    # index
+    page.get_by_role('textbox').fill(url_empty)
+    page.get_by_role('button').click()
+    expect(page.get_by_text("URL обязателен")).to_be_visible()
+    expect(page.get_by_text("Некорректный URL")).to_be_visible()
+    expect(page).to_have_url(re.compile(page_next))
+
+    # urls/2
+    page.get_by_role('textbox').fill(url_entered2)
+    page.get_by_role('button').click()
+    expect(page).to_have_url(re.compile(page_url_name2))
+    expect(page.get_by_text(f'Сайт: {url_name2}')).to_be_visible()
+
+    # urls
+    page.get_by_text('Сайты').click()
+    expect(page.get_by_text(url_name1)).to_be_visible()
+    expect(page.get_by_text(url_name2)).to_be_visible()
+
     browser.close()
-    print('... sync_playwright completed!' + '\n')
+
+
+with sync_playwright() as playwright:
+    run(playwright)
