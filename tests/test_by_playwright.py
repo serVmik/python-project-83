@@ -1,14 +1,12 @@
 import re
 from playwright.sync_api import (
     expect,
-    sync_playwright,
+    Page,
 )
 
-from page_analyzer import db
-from page_analyzer.app import CONN_STRING
 
-
-def run(p):
+def test_page_analyzer(page: Page):
+    # drop db tables via Makefile 'make schema-db" before running test
     url_entered1 = 'https://ru.hexlet.io/my'
     url_entered2 = 'https://yandex.ru/musik'
     url_name1 = 'https://ru.hexlet.io'
@@ -20,18 +18,6 @@ def run(p):
     page_url_name1 = 'http://127.0.0.1:5000/urls/1'
     page_url_name2 = 'http://127.0.0.1:5000/urls/2'
     page_urls = 'http://127.0.0.1:5000/urls'
-
-    # drop db tables
-    connection = db.connect(CONN_STRING)
-    with open('./database.sql', 'r') as f:
-        query = f.read()
-    with connection.cursor() as curs:
-        curs.execute(query)
-        connection.commit()
-    db.close(connection)
-
-    browser = p.chromium.launch(headless=False, slow_mo=500)
-    page = browser.new_page()
 
     # index
     page.goto(page_index)
@@ -48,9 +34,9 @@ def run(p):
     expect(page.get_by_text(f'Сайт: {url_name1}')).to_be_visible()
     page.get_by_role('button').click()
     expect(page.get_by_text("Страница успешно проверена")).to_be_visible()
+    page.get_by_text('Сайты').click()
 
     # urls
-    page.get_by_text('Сайты').click()
     expect(page).to_have_url(re.compile(page_urls))
     page.get_by_text('https://ru.hexlet.io').click()
 
@@ -72,20 +58,14 @@ def run(p):
     expect(page.get_by_text("URL обязателен")).to_be_visible()
     expect(page.get_by_text("Некорректный URL")).to_be_visible()
     expect(page).to_have_url(re.compile(page_urls))
-
-    # urls/2
     page.get_by_role('textbox').fill(url_entered2)
     page.get_by_role('button').click()
+
+    # urls/2
     expect(page).to_have_url(re.compile(page_url_name2))
     expect(page.get_by_text(f'Сайт: {url_name2}')).to_be_visible()
+    page.get_by_text('Сайты').click()
 
     # urls
-    page.get_by_text('Сайты').click()
     expect(page.get_by_text(url_name1)).to_be_visible()
     expect(page.get_by_text(url_name2)).to_be_visible()
-
-    browser.close()
-
-
-with sync_playwright() as playwright:
-    run(playwright)
