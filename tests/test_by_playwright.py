@@ -1,4 +1,6 @@
+import os
 import re
+
 from playwright.sync_api import (
     expect,
     Page,
@@ -12,6 +14,8 @@ def test_page_analyzer(page: Page):
     url_name2 = 'https://www.djangoproject.com'
     url_empty = ''
     baseurl = 'http://server:8001'
+    if os.getenv('WORKFLOW') == 'pyci':
+        baseurl = 'http://127.0.0.1:5000'
     page_index = f'{baseurl}'
     page_index_title = 'Анализатор страниц'
     page_index_placeholder = 'https://www.example.com'

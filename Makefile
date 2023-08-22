@@ -33,14 +33,12 @@ test:
 test-pw:
 	poetry run pytest tests/test_by_playwright.py -v -s
 
-test-pw-local: schema-db test-pw
-
 test-coverage:
 	poetry run pytest --cov=page_analyzer --cov-report xml
 
 selfcheck:
 	poetry check
 
-check: lint test test-pw
+check: test test-pw lint
 
 .PHONY: dev install test lint selfcheck check build

@@ -7,6 +7,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          # POSTGRES_DB: page_analyzer
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
         # Clone the repository
       - uses: actions/checkout@v3
@@ -25,10 +39,19 @@ jobs:
           make install
           playwright install
 
-        # Run linter and pytest
-      - name: Run linter and pytest
+        # Connect to PostgreSQL
+      - name: Connect to PostgreSQL
         run: |
-          make dev
+          sudo systemctl start postgresql.service &
+          pg_ctl -D /var/lib/postgresql/data -l logfile start
+          createdb page_analyzer
+
+        # Run server and tests
+      - name: Run server and tests
+        run: |
+          make dev &
+          sleep 7 &&
+          export WORKFLOW='pyci'
           make check
 
         # Test & publish code coverage for Code Climate
