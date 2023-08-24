@@ -22,9 +22,9 @@ def validate_url(url_entered):
     return url_errors
 
 
-def get_page_data(url):
+def get_page_data(url_name):
     try:
-        r = requests.get(url)
+        r = requests.get(url_name)
         soup = BeautifulSoup(r.text, 'html.parser')
         desc = soup.find('meta', attrs={'name': 'description'})
         page_data = {

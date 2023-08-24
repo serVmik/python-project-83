@@ -25,7 +25,7 @@ def add_url(connection, url_name):
         return url
 
 
-def add_check(connection, url_id, url_requests):
+def add_check(connection, url_id, page_data):
     with connection.cursor() as curs:
         curs.execute(
             '''
@@ -34,27 +34,12 @@ def add_check(connection, url_id, url_requests):
             VALUES (%s, %s, %s, %s, %s)
             ''',
             (url_id,
-             url_requests['status_code'],
-             url_requests['h1'],
-             url_requests['title'],
-             url_requests['description'])
+             page_data['status_code'],
+             page_data['h1'],
+             page_data['title'],
+             page_data['description'])
         )
         connection.commit()
-
-
-def is_url_exists(connection, url_name):
-    with connection.cursor() as curs:
-        curs.execute(
-            '''
-            SELECT id, name, created_at
-            FROM urls
-            WHERE name = %s
-            ''',
-            (url_name,)
-        )
-        db_answer = curs.fetchone()
-
-        return True if db_answer else False
 
 
 def get_url_by_name(connection, url_name):
@@ -69,7 +54,7 @@ def get_url_by_name(connection, url_name):
         )
         url = curs.fetchone()
 
-        return url
+        return url if url else None
 
 
 def get_url_by_id(connection, url_id):

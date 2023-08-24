@@ -40,21 +40,20 @@ def post_url():
 
     connection = db.connect(CONN_STRING)
     url_name = urls.normalize_url(url_entered)
+    url = db.get_url_by_name(connection, url_name)
 
-    if db.is_url_exists(connection, url_name):
-        url = db.get_url_by_name(connection, url_name)
+    if url:
         flash('Страница уже существует', 'info')
     else:
         url = db.add_url(connection, url_name)
         flash('Страница успешно добавлена', 'success')
 
-    url_id = url.id
     db.close(connection)
 
     return redirect(
         url_for(
             'show_url',
-            url_id=url_id
+            url_id=url.id
         )
     )
 
@@ -75,13 +74,13 @@ def show_urls():
 def show_url(url_id):
     connection = db.connect(CONN_STRING)
     url = db.get_url_by_id(connection, url_id)
-    url_check = db.get_checks(connection, url_id)
+    url_checks = db.get_checks(connection, url_id)
     db.close(connection)
 
     return render_template(
         'url.html',
         url=url,
-        url_check=url_check
+        url_checks=url_checks
     )
 
 
@@ -89,19 +88,19 @@ def show_url(url_id):
 def check_url(url_id):
     connection = db.connect(CONN_STRING)
     url = db.get_url_by_id(connection, url_id)
-    url_requests = urls.get_page_data(url.name)
+    page_data = urls.get_page_data(url.name)
 
-    if not url_requests or url_requests.get('status_code') != 200:
+    if not page_data or page_data.get('status_code') != 200:
         flash('Произошла ошибка при проверке', 'danger')
     else:
-        db.add_check(connection, url_id, url_requests)
+        db.add_check(connection, url_id, page_data)
         flash('Страница успешно проверена', 'success')
 
-    url_check = db.get_checks(connection, url_id)
+    url_checks = db.get_checks(connection, url_id)
     db.close(connection)
 
     return render_template(
         'url.html',
         url=url,
-        url_check=url_check
+        url_checks=url_checks
     )

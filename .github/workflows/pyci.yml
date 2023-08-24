@@ -8,54 +8,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          # POSTGRES_DB: page_analyzer
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-        ports:
-          - 5432:5432
-
     steps:
         # Clone the repository
       - uses: actions/checkout@v3
 
-        # Install Python
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
 
-        # Make depends on poetry
       - name: Install dependencies
         run: |
           curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.5.1 python3 -
-          pip install playwright
           make install
-          playwright install
 
-        # Connect to PostgreSQL
-      - name: Connect to PostgreSQL
-        run: |
-          sudo systemctl start postgresql.service &
-          pg_ctl -D /var/lib/postgresql/data -l logfile start
-          createdb page_analyzer
+      - name: Run pytest and linter
+        run: make check
 
-        # Run server and tests
-      - name: Run server and tests
-        run: |
-          make dev &
-          sleep 7 &&
-          export WORKFLOW='pyci'
-          make check
-
-        # Test & publish code coverage for Code Climate
-      - name: Test & publish code coverage
+      - name: Test & publish code coverage for Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         if: github.ref_name == 'main'
         env:
