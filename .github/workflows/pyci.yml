@@ -22,9 +22,11 @@ jobs:
           curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.5.1 python3 -
           make install
 
-      - name: Run pytest and linter
-        run: make check
+      - name: Run linter
+        run: make lint
 
+        # Run pytest via: make test-coverage.
+        # Publishing code test on Code Climate
       - name: Test & publish code coverage for Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         if: github.ref_name == 'main'

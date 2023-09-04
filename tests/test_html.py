@@ -1,6 +1,11 @@
 import pytest
+# import requests_mock
 
-from page_analyzer.urls import normalize_url, validate_url
+from page_analyzer.html import (
+    normalize_url,
+    validate_url,
+    # get_page_data,
+)
 
 
 @pytest.mark.parametrize(
@@ -39,3 +44,26 @@ class TestValidateUrl:
     def test_validate_too_long_url(self):
         assert ('URL превышает 255 символов', 'danger') in validate_url(self.too_long_url)
         assert ('URL превышает 255 символов', 'danger') not in validate_url(self.short_url)
+
+
+class TestGetPageData:
+    fixture_page = './tests/fixtures/page.html'
+    page_url = 'https://ru.hexlet.io'
+    expected_page_data = {
+        'status_code': 200,
+        'h1': 'Test h1',
+        'title': 'Test title',
+        'description': 'Test content',
+    }
+
+    # def test_get_page_data1(self):
+    #     with open(self.fixture_page) as fp:
+    #         current_page = fp.read()
+    #     with requests_mock.Mocker() as mock:
+    #         mock.get(
+    #             self.page_url,
+    #             text=current_page
+    #         )
+    #         current_data = get_page_data(self.page_url)
+    #
+    #     assert self.expected_page_data == current_data

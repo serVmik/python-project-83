@@ -18,10 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          pip install requests-mock
-
       - name: Hexlet project check
         uses: hexlet/project-action@release
         with:

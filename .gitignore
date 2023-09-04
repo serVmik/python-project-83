@@ -4,5 +4,6 @@ __pycache__/
 .coverage
 coverage.xml
 dist/
+tests/fixtures/
 tests/test_db.py
 tests/test_by_playwright.py
