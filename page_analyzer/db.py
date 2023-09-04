@@ -1,9 +1,11 @@
 import psycopg2
-from psycopg2.extras import NamedTupleCursor
+from psycopg2.extras import NamedTupleCursor, DictCursor
 
 
-def connect(conn_string):
-    return psycopg2.connect(conn_string)
+def connect(app):
+    return psycopg2.connect(
+        app.config['DATABASE_URL'],
+    )
 
 
 def close(connection):
@@ -72,30 +74,8 @@ def get_url_by_id(connection, url_id):
         return url
 
 
-def get_urls(connection):
-    with connection.cursor(cursor_factory=NamedTupleCursor) as curs:
-        curs.execute(
-            '''
-            SELECT urls.id AS id,
-                   urls.name AS name,
-                   url_checks.last_checked_at AS last_checked_at,
-                   url_checks.status_code AS status_code
-            FROM urls
-            LEFT JOIN url_checks ON urls.id = url_checks.url_id
-            AND url_checks.id =
-              (SELECT max(id)
-               FROM url_checks
-               WHERE urls.id = url_checks.url_id)
-            ORDER BY urls.id DESC;
-            '''
-        )
-        urls = curs.fetchall()
-
-        return urls
-
-
 def get_checks(connection, url_id):
-    with connection.cursor(cursor_factory=NamedTupleCursor) as curs:
+    with connection.cursor(cursor_factory=DictCursor) as curs:
         curs.execute(
             '''
             SELECT id AS check_id,
@@ -111,3 +91,29 @@ def get_checks(connection, url_id):
         checks = curs.fetchall()
 
         return checks
+
+
+def get_urls(connection):
+    with connection.cursor(cursor_factory=DictCursor) as curs:
+        curs.execute(
+            '''
+            SELECT id,
+                   name
+            FROM urls
+            '''
+        )
+        urls = curs.fetchall()
+
+        check_urls = []
+        latest_check_urls_index = -1
+
+        for url in urls:
+            checks = get_checks(connection, url.get('id'))
+            latest_check = checks[latest_check_urls_index] if checks else {}
+
+            url = dict(url)
+            url['last_checked_at'] = latest_check.get('last_checked_at', '')
+            url['status_code'] = latest_check.get('status_code', '')
+            check_urls.insert(latest_check_urls_index, url)
+
+        return check_urls

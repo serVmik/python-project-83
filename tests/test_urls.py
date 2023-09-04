@@ -1,6 +1,6 @@
 import pytest
 
-from page_analyzer.urls import normalize_url, validate_url
+from page_analyzer.html import normalize_url, validate_url
 
 
 @pytest.mark.parametrize(

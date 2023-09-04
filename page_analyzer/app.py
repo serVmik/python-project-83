@@ -9,13 +9,13 @@ from flask import (
     flash
 )
 
-from page_analyzer import db, urls
+from page_analyzer import db, html
 
 app = Flask(__name__)
 
 load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-CONN_STRING = os.getenv('DATABASE_URL')
+app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
 
 
 @app.get('/')
@@ -28,18 +28,18 @@ def index():
 @app.post('/urls')
 def post_url():
     url_entered = request.form.get('url')
-    messages = urls.validate_url(url_entered)
+    messages = html.validate_url(url_entered)
 
     if messages:
         for message in messages:
             flash(*message)
         return render_template(
             'index.html',
-            url=url_entered
+            url=url_entered,
         ), 422
 
-    connection = db.connect(CONN_STRING)
-    url_name = urls.normalize_url(url_entered)
+    connection = db.connect(app)
+    url_name = html.normalize_url(url_entered)
     url = db.get_url_by_name(connection, url_name)
 
     if url:
@@ -53,26 +53,26 @@ def post_url():
     return redirect(
         url_for(
             'show_url',
-            url_id=url.id
+            url_id=url.id,
         )
     )
 
 
 @app.get('/urls')
 def show_urls():
-    connection = db.connect(CONN_STRING)
-    urls_ = db.get_urls(connection)
+    connection = db.connect(app)
+    urls = db.get_urls(connection)
     db.close(connection)
 
     return render_template(
         'urls.html',
-        urls_=urls_
+        urls=urls,
     )
 
 
 @app.get('/urls/<int:url_id>')
 def show_url(url_id):
-    connection = db.connect(CONN_STRING)
+    connection = db.connect(app)
     url = db.get_url_by_id(connection, url_id)
     url_checks = db.get_checks(connection, url_id)
     db.close(connection)
@@ -80,15 +80,15 @@ def show_url(url_id):
     return render_template(
         'url.html',
         url=url,
-        url_checks=url_checks
+        url_checks=url_checks,
     )
 
 
 @app.post('/urls/<int:url_id>/checks')
 def check_url(url_id):
-    connection = db.connect(CONN_STRING)
+    connection = db.connect(app)
     url = db.get_url_by_id(connection, url_id)
-    page_data = urls.get_page_data(url.name)
+    page_data = html.get_page_data(url.name)
 
     if not page_data or page_data.get('status_code') != 200:
         flash('Произошла ошибка при проверке', 'danger')
@@ -102,5 +102,5 @@ def check_url(url_id):
     return render_template(
         'url.html',
         url=url,
-        url_checks=url_checks
+        url_checks=url_checks,
     )
